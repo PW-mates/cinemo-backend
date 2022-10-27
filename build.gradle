@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
+    id("com.github.nbaztec.coveralls-jacoco") version "1.2.15"
+	id "jacoco"
 }
 
 group = 'com.pw'
@@ -10,6 +12,7 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
@@ -33,8 +36,22 @@ dependencies {
 
 }
 
+jacoco {
+    reportsDirectory = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true // coveralls plugin depends on xml format report
+        html.required = true
+    }
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
+	jacoco {
+        destinationFile = file("$buildDir/jacoco/test.exec")
+    }
 }
 
 jar {
