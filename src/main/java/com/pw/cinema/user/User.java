@@ -1,10 +1,13 @@
 package com.pw.cinema.user;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
@@ -43,6 +46,11 @@ public class User {
         this.password = password;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -63,9 +71,11 @@ public class User {
         this.lastName = lastName;
     }
 
+
     public String getUsername() {
         return username;
     }
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -73,5 +83,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return this.password;
     }
 }
