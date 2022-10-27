@@ -13,12 +13,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -61,6 +63,25 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success:", "true");
+        resp.put("data", tokens);
+        resp.put("message", "Successful Authentication");
+        new ObjectMapper().writeValue(response.getOutputStream(), resp);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException {
+        this.logger.trace("Failed to process authentication request", failed);
+        this.logger.trace("Cleared SecurityContextHolder");
+        this.logger.trace("Handling authentication failure");
+        Map<String, String> resp = new HashMap<>();
+        resp.put("success", "false");
+        resp.put("message", "Unsuccessful Authentication");
+        resp.put("data", null);
+        response.setContentType(APPLICATION_JSON_VALUE);
+        response.setStatus(UNAUTHORIZED.value());
+        new ObjectMapper().writeValue(response.getOutputStream(), resp);
     }
 }
