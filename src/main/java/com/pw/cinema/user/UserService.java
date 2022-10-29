@@ -1,7 +1,12 @@
 package com.pw.cinema.user;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service @Slf4j
 public class UserService implements UserDetailsService {
@@ -54,5 +62,17 @@ public class UserService implements UserDetailsService {
         log.info("Saving new user to database {}", newUser.getUsername());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         return userRepository.save(newUser);
+    }
+
+    public User getUserByJWT(HttpHeaders authorizationHeader) {
+        System.out.println(authorizationHeader.toString());
+        String token = Objects.requireNonNull(authorizationHeader.getFirst("authorization")).substring("Bearer ".length());
+        Algorithm algorithm = Algorithm.HMAC256(System.getenv("JWT_SECRET").getBytes());
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT decodedJWT = verifier.verify(token);
+        String username = decodedJWT.getSubject();
+        System.out.println("username: ");
+        System.out.println(username);
+        return userRepository.findByUsername(username);
     }
 }
