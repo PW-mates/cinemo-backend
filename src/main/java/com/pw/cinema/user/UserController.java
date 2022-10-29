@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController @RequiredArgsConstructor
 public class UserController {
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/account/info")
-    public ResponseEntity<User> getUser(@RequestHeader HttpHeaders headers) {
+    public ResponseEntity<Object> getUser(@RequestHeader HttpHeaders headers) {
         return ResponseEntity.ok().body(userService.getUserByJWT(headers));
     }
 }
