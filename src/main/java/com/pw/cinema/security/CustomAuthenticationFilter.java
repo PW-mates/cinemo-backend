@@ -37,7 +37,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request_http, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request_http, HttpServletResponse response)
+            throws AuthenticationException {
         System.out.println("Request: ");
         JSONObject request;
         try {
@@ -52,25 +53,27 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String password = request.getString("password");
         log.info("Username is: {}", username);
         log.info("Password is: {}", password);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+                password);
         return authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
-        User user = (User)authentication.getPrincipal();
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+            Authentication authentication) throws IOException {
+        User user = (User) authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256(System.getenv("JWT_SECRET").getBytes());
         String access_token = JWT.create().withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-//        response.setHeader("access_token", access_token);
-//        response.setHeader("refresh_token", refresh_token);
+        // response.setHeader("access_token", access_token);
+        // response.setHeader("refresh_token", refresh_token);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", access_token);
         response.setContentType(APPLICATION_JSON_VALUE);
         Map<String, Object> resp = new HashMap<>();
-        resp.put("success:", "true");
+        resp.put("success:", true);
         resp.put("data", tokens);
         resp.put("message", "Successful Authentication");
         new ObjectMapper().writeValue(response.getOutputStream(), resp);
@@ -78,12 +81,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                              AuthenticationException failed) throws IOException {
+            AuthenticationException failed) throws IOException {
         this.logger.trace("Failed to process authentication request", failed);
         this.logger.trace("Cleared SecurityContextHolder");
         this.logger.trace("Handling authentication failure");
         Map<String, String> resp = new HashMap<>();
-        resp.put("success", "false");
+        resp.put("success", false);
         resp.put("message", "Unsuccessful Authentication");
         resp.put("data", null);
         response.setContentType(APPLICATION_JSON_VALUE);
