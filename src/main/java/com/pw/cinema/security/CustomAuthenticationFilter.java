@@ -85,7 +85,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         this.logger.trace("Failed to process authentication request", failed);
         this.logger.trace("Cleared SecurityContextHolder");
         this.logger.trace("Handling authentication failure");
-        Map<String, String> resp = new HashMap<>();
+        Map<String, Object> resp = new HashMap<>();
         resp.put("success", false);
         resp.put("message", "Unsuccessful Authentication");
         resp.put("data", null);
