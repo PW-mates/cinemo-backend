@@ -73,7 +73,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("access_token", access_token);
         response.setContentType(APPLICATION_JSON_VALUE);
         Map<String, Object> resp = new HashMap<>();
-        resp.put("success:", true);
+        resp.put("success", true);
         resp.put("data", tokens);
         resp.put("message", "Successful Authentication");
         new ObjectMapper().writeValue(response.getOutputStream(), resp);
