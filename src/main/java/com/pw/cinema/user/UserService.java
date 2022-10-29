@@ -65,14 +65,11 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUserByJWT(HttpHeaders authorizationHeader) {
-        System.out.println(authorizationHeader.toString());
         String token = Objects.requireNonNull(authorizationHeader.getFirst("authorization")).substring("Bearer ".length());
         Algorithm algorithm = Algorithm.HMAC256(System.getenv("JWT_SECRET").getBytes());
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
         String username = decodedJWT.getSubject();
-        System.out.println("username: ");
-        System.out.println(username);
         return userRepository.findByUsername(username);
     }
 }
