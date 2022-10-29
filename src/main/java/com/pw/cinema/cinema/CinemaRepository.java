@@ -1,4 +1,6 @@
 package com.pw.cinema.cinema;
 
-public interface CinemaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CinemaRepository extends JpaRepository<Cinema, Long> {
 }
