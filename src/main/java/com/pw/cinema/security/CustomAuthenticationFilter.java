@@ -34,16 +34,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
+        setFilterProcessesUrl("/account/login");
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request_http, HttpServletResponse response)
             throws AuthenticationException {
-        System.out.println("Request: ");
         JSONObject request;
         try {
             String str = request_http.getReader().lines().collect(Collectors.joining());
-            System.out.println(str);
             request = new JSONObject(str);
         } catch (IOException e) {
             throw new RuntimeException(e);
