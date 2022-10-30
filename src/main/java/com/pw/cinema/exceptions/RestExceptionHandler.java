@@ -2,11 +2,13 @@ package com.pw.cinema.exceptions;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -16,13 +18,30 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public Map<String, Object> handleNoSuchElementException(NoSuchElementException exception) {
+        return responseException(exception);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public Map<String, Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException exception) {
+        return responseException(exception);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AlreadyExistsException.class)
+    public Map<String, Object> handleAlreadyExistsException(AlreadyExistsException exception) {
+        return responseException(exception);
+    }
+
+    public Map<String, Object> responseException(Exception exception) {
         Map<String, Object> errorMap = new HashMap<>();
         errorMap.put("success", false);
         errorMap.put("message", exception.getMessage());
         return errorMap;
     }
+
 
 }
