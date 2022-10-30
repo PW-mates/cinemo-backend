@@ -2,15 +2,16 @@ package com.pw.cinema.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController @RequiredArgsConstructor
-@RequestMapping("/api")
 public class UserController {
     UserService userService;
 
@@ -19,14 +20,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path="/users")
+    @GetMapping(path="/manage/users")
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @PostMapping(path="/user/save")
+    @PostMapping(path="/account/user/save")
     public ResponseEntity<User> createUser(@RequestBody User user){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
+    }
+
+    @GetMapping(path = "/account/info")
+    public ResponseEntity<Object> getUser(@RequestHeader HttpHeaders headers) {
+        return ResponseEntity.ok().body(userService.getUserByJWT(headers));
     }
 }
