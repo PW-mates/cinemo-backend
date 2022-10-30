@@ -2,6 +2,7 @@ package com.pw.cinema.movie_category;
 
 
 import com.pw.cinema.movie.Movie;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +13,7 @@ public class MovieCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String name;
     private String description;
 

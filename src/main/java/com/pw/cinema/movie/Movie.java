@@ -1,6 +1,7 @@
 package com.pw.cinema.movie;
 
 import com.pw.cinema.movie_category.MovieCategory;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,8 +12,10 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NonNull
     private Long length;
     private String ageRestriction;
+    @NonNull
     private String name;
     private String description;
 
