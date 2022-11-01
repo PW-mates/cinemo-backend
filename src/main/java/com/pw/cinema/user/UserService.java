@@ -67,12 +67,16 @@ public class UserService implements UserDetailsService {
         return userRepository.save(newUser);
     }
 
-    public Object getUserByJWT(HttpHeaders authorizationHeader) {
+    public String getUsernameByJWT(HttpHeaders authorizationHeader) {
         String token = Objects.requireNonNull(authorizationHeader.getFirst("authorization")).substring("Bearer ".length());
         Algorithm algorithm = Algorithm.HMAC256(System.getenv("JWT_SECRET").getBytes());
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
-        String username = decodedJWT.getSubject();
+        return decodedJWT.getSubject();
+    }
+
+    public Object getUserByJWT(HttpHeaders authorizationHeader) {
+        String username = getUsernameByJWT(authorizationHeader);
         User user = userRepository.findByUsername(username);
         if (user == null) throw new UsernameNotFoundException("Username not found");
         Map<String, Object> resp = new HashMap<>();
@@ -80,5 +84,13 @@ public class UserService implements UserDetailsService {
         resp.put("data", user);
         resp.put("message", "Successful fetching data");
         return resp;
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findUserById(id);
+    }
+
+    public Object updateUser(User user) {
+        return userRepository.save(user);
     }
 }
