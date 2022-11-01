@@ -28,17 +28,17 @@ public class CinemaApplication {
     @Bean
     CommandLineRunner run(UserService userService, RoleService roleService) {
         return args -> {
-            roleService.saveRole(new Role(null, "admin"));
-            roleService.saveRole(new Role(null, "user"));
+            roleService.saveRole(new Role(null, "ROLE_ADMIN"));
+            roleService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveUser(new User("Jack",
                     "Daniel",
                     System.getenv("ADMIN_USERNAME"),
                     System.getenv("ADMIN_PASSWORD"),
                     new ArrayList<>()));
 
-            userService.saveUser(new User("Jagger",
+            userService.saveUser(new User("Jager",
                     "Meister",
-                    "jagger.meister",
+                    "jager.meister",
                     "1234",
                     new ArrayList<>()));
 
@@ -48,9 +48,9 @@ public class CinemaApplication {
                     "1234",
                     new ArrayList<>()));
 
-            roleService.addRoleToUser(System.getenv("ADMIN_USERNAME"), "admin");
-            roleService.addRoleToUser("jagger.meister", "user");
-            roleService.addRoleToUser("tullamore.dev", "user");
+            roleService.addRoleToUser(System.getenv("ADMIN_USERNAME"), "ROLE_ADMIN");
+            roleService.addRoleToUser("jager.meister", "ROLE_USER");
+            roleService.addRoleToUser("tullamore.dev", "ROLE_USER");
         };
     }
 }

@@ -38,6 +38,9 @@ public class UserService implements UserDetailsService {
             log.info("User found: {}", username);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
@@ -67,6 +70,7 @@ public class UserService implements UserDetailsService {
         DecodedJWT decodedJWT = verifier.verify(token);
         String username = decodedJWT.getSubject();
         User user = userRepository.findByUsername(username);
+        if (user == null) throw new UsernameNotFoundException("Username not found");
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", user);
