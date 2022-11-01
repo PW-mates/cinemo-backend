@@ -18,12 +18,12 @@ public class RoleService {
         this.userRepository = userRepository;
     }
 
-    Role saveRole(Role role) {
+    public Role saveRole(Role role) {
         log.info("Save new role {} to database", role.getName());
         return roleRepository.save(role);
     }
 
-    void addRoleToUser(String username, String roleName){
+    public void addRoleToUser(String username, String roleName){
         log.info("Add new role {} to user {}", roleName, username);
         User user = userRepository.findByUsername(username);
         Role role = roleRepository.findByName(roleName);
