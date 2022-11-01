@@ -1,8 +1,10 @@
 package com.pw.cinema.user;
 
+import com.pw.cinema.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -16,6 +18,8 @@ public class User{
     @Column(unique = true)
     private String username;
     private String password;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -29,6 +33,35 @@ public class User{
     }
 
     public User() {
+    }
+
+    public User(Long userId, String firstName, String lastName, String username, String password, Collection<Role> roles) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String firstName, String lastName, String username, String password, Collection<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
     public User(Long userId, String firstName, String lastName, String username, String password) {
