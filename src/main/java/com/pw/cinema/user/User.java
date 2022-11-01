@@ -11,7 +11,7 @@ import java.util.Collection;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
     private String firstName;
     private String lastName;
     @Column(unique = true)
@@ -23,8 +23,8 @@ public class User {
     public User() {
     }
 
-    public User(Long userId, String firstName, String lastName, String username, String password, Collection<Role> roles) {
-        this.userId = userId;
+    public User(Long id, String firstName, String lastName, String username, String password, Collection<Role> roles) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -40,8 +40,8 @@ public class User {
         this.roles = roles;
     }
 
-    public User(Long userId, String firstName, String lastName, String username, String password) {
-        this.userId = userId;
+    public User(Long id, String firstName, String lastName, String username, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -63,7 +63,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
@@ -80,12 +80,12 @@ public class User {
         this.roles = roles;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

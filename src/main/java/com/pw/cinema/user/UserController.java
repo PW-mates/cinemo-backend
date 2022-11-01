@@ -21,12 +21,12 @@ public class UserController {
     }
 
     @GetMapping(path="/manage/users")
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<Object> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
     @PostMapping(path="/account/user/save")
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<Object> createUser(@RequestBody User user){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }

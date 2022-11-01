@@ -44,9 +44,13 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
-    public List<User> getUsers() {
+    public Object getUsers() {
         log.info("Fetching all users");
-        return userRepository.findAll();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", userRepository.findAll());
+        resp.put("message", "Successful fetching data");
+        return resp;
     }
 
     public User getUser(String username) {
