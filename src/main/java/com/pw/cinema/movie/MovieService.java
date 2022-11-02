@@ -15,15 +15,6 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public Object getMovieById(Long id) {
-        Movie movie = movieRepository.findById(id).get();
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", movie);
-        response.put("message", "Successfully found movie");
-        response.put("success", true);
-        return response;
-    }
-
     public Object create(Movie movie) throws AlreadyExistsException {
         if (movieRepository.findByName(movie.getTitle()) != null) {
             throw new AlreadyExistsException("Movie with that name already exists");
@@ -56,6 +47,25 @@ public class MovieService {
         Map<String, Object> response = new HashMap<>();
         movieRepository.deleteById(id);
         response.put("message", "Successfully deleted movie");
+        response.put("success", true);
+        return response;
+    }
+
+    public Object getMovieById(Long id) {
+        Movie movie = movieRepository.findById(id).get();
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", movie);
+        response.put("message", "Successfully found movie");
+        response.put("success", true);
+        return response;
+    }
+
+    public Object uploadPoster(String poster, Long id) {
+        Movie movie = movieRepository.findById(id).get();
+        Map<String, Object> response = new HashMap<>();
+        movie.setPosterPhoto(poster);
+        response.put("data", movieRepository.save(movie));
+        response.put("message", "Successfully found movie");
         response.put("success", true);
         return response;
     }
