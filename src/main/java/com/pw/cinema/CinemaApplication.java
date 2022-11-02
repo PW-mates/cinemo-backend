@@ -38,19 +38,19 @@ public class CinemaApplication {
 
             userService.saveUser(new User("Jager",
                     "Meister",
-                    "jager.meister",
-                    "1234",
+                    System.getenv("USER1_USERNAME"),
+                    System.getenv("USER1_PASSWORD"),
                     new ArrayList<>()));
 
             userService.saveUser(new User("Tullamore",
                     "Dev",
-                    "tullamore.dev",
-                    "1234",
+                    System.getenv("USER2_USERNAME"),
+                    System.getenv("USER2_PASSWORD"),
                     new ArrayList<>()));
 
             roleService.addRoleToUser(System.getenv("ADMIN_USERNAME"), "ROLE_ADMIN");
-            roleService.addRoleToUser("jager.meister", "ROLE_USER");
-            roleService.addRoleToUser("tullamore.dev", "ROLE_USER");
+            roleService.addRoleToUser(System.getenv("USER1_USERNAME"), "ROLE_USER");
+            roleService.addRoleToUser(System.getenv("USER2_USERNAME"), "ROLE_USER");
         };
     }
 }
