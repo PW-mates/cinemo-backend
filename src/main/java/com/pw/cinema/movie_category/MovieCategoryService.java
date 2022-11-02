@@ -51,11 +51,8 @@ public class MovieCategoryService {
 
 
     public Object updateCategory(MovieCategory categoryChanges, Long id) {
-        MovieCategory movieCategory = movieCategoryRepository.findById(id).get();
-        movieCategory.setName(categoryChanges.getName());
-        movieCategory.setDescription(categoryChanges.getDescription());
         Map<String, Object> response = new HashMap<>();
-        response.put("data", movieCategoryRepository.save(movieCategory));
+        response.put("data", movieCategoryRepository.save(categoryChanges));
         response.put("message", "Successfully found movies");
         response.put("success", true);
         return response;

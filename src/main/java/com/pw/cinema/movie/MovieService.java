@@ -2,6 +2,7 @@ package com.pw.cinema.movie;
 
 import com.pw.cinema.exceptions.AlreadyExistsException;
 import com.pw.cinema.movie_category.MovieCategory;
+import com.pw.cinema.movie_category.MovieCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,22 +25,15 @@ public class MovieService {
     }
 
     public Object create(Movie movie) throws AlreadyExistsException {
-        if (movieRepository.findByName(movie.getName()) != null) {
+        if (movieRepository.findByName(movie.getTitle()) != null) {
             throw new AlreadyExistsException("Movie with that name already exists");
         }
-        Movie newMovie = new Movie();
-        newMovie.setName(movie.getName());
-        newMovie.setDescription(movie.getDescription());
-        newMovie.setLength(movie.getLength());
-        newMovie.setAgeRestriction(movie.getAgeRestriction());
-        newMovie.setMovieCategories(movie.getMovieCategories());
         Map<String, Object> response = new HashMap<>();
-        response.put("data", movieRepository.save(newMovie));
+        response.put("data", movieRepository.save(movie));
         response.put("message", "Successfully added new movie");
         response.put("success", true);
         return response;
     }
-
 
     public Object getMovieList() {
         List<Movie> movies = new ArrayList<>(movieRepository.findAll());
@@ -51,13 +45,8 @@ public class MovieService {
     }
 
     public Object updateMovie(Movie movieChanges, Long id) {
-        Movie movie = movieRepository.findById(id).get();
-        movie.setName(movieChanges.getName());
-        movie.setDescription(movieChanges.getDescription());
-        movie.setLength(movieChanges.getLength());
-        movie.setAgeRestriction(movieChanges.getAgeRestriction());
         Map<String, Object> response = new HashMap<>();
-        response.put("data", movieRepository.save(movie));
+        response.put("data", movieRepository.save(movieChanges));
         response.put("message", "Successfully found movies");
         response.put("success", true);
         return response;
@@ -70,4 +59,11 @@ public class MovieService {
         response.put("success", true);
         return response;
     }
+//
+//    public Object addCategoryToMovie(Long movieId, Long categoryId) {
+//        Movie movie = movieRepository.findById(movieId).get();
+//        MovieCategory movieCategory = movieCategoryRepository.findById(categoryId).get();
+//        movie.addCategory(movieCategory);
+//        return movieRepository.save(movie);
+//    }
 }

@@ -35,4 +35,8 @@ public class MovieController {
     public ResponseEntity<Object> deleteMovie(@RequestParam Long id) {
         return ResponseEntity.ok().body(movieService.deleteMovie(id));
     }
+    @PutMapping(path = "/{movieId}/categories/{categoryId}")
+    public ResponseEntity<Object> addCategoryToMovie(@PathVariable Long movieId, Long categoryId) {
+        return ResponseEntity.ok().body(movieService.addCategoryToMovie(movieId, categoryId));
+    }
 }

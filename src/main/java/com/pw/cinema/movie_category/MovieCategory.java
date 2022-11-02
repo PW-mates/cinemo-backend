@@ -1,6 +1,7 @@
 package com.pw.cinema.movie_category;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pw.cinema.movie.Movie;
 import com.sun.istack.NotNull;
 
@@ -17,15 +18,15 @@ public class MovieCategory {
     private Long id;
     @NotNull
     private String name;
-    private String description;
+    private String slug;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             },
-            mappedBy = "movieCategories")
-//    @JsonIgnore
+            mappedBy = "category")
+    @JsonIgnore
     private Set<Movie> movies = new HashSet<>();
 
 
@@ -34,6 +35,11 @@ public class MovieCategory {
 
     public MovieCategory(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieCategory";
     }
 
     public Long getId() {
@@ -52,12 +58,12 @@ public class MovieCategory {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getSlug() {
+        return slug;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public Set<Movie> getMovies() {
