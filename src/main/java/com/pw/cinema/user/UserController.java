@@ -44,6 +44,7 @@ public class UserController {
         Map<String, Object> resp = new HashMap<>();
         System.out.println(user);
         User inDB = userService.findUserById(user.getId());
+        if (inDB != null) user.setPassword(inDB.getPassword());
         if (inDB == null || !Objects.equals(user.getUsername(), userService.getUsernameByJWT(headers))) {
             resp.put("success", false);
             resp.put("message", "Current userdata is not matched or not found!");
