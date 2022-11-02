@@ -1,12 +1,12 @@
 package com.pw.cinema.movie;
 
 import com.pw.cinema.exceptions.AlreadyExistsException;
+import com.pw.cinema.movie_category.MovieCategory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MovieService {
@@ -27,8 +27,14 @@ public class MovieService {
         if (movieRepository.findByName(movie.getName()) != null) {
             throw new AlreadyExistsException("Movie with that name already exists");
         }
+        Movie newMovie = new Movie();
+        newMovie.setName(movie.getName());
+        newMovie.setDescription(movie.getDescription());
+        newMovie.setLength(movie.getLength());
+        newMovie.setAgeRestriction(movie.getAgeRestriction());
+        newMovie.setMovieCategories(movie.getMovieCategories());
         Map<String, Object> response = new HashMap<>();
-        response.put("data", movieRepository.save(movie));
+        response.put("data", movieRepository.save(newMovie));
         response.put("message", "Successfully added new movie");
         response.put("success", true);
         return response;
@@ -36,7 +42,7 @@ public class MovieService {
 
 
     public Object getMovieList() {
-        List<Movie> movies = movieRepository.findAll();
+        List<Movie> movies = new ArrayList<>(movieRepository.findAll());
         Map<String, Object> response = new HashMap<>();
         response.put("data", movies);
         response.put("message", "Successfully found movies");

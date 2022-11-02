@@ -21,7 +21,7 @@ public class MovieController {
         return ResponseEntity.ok().body(movieService.getMovieList());
     }
 
-    @PostMapping(path = "/movies")
+    @PostMapping(path = "/movie")
     public ResponseEntity<Object> addMovie(@RequestBody Movie movie) throws AlreadyExistsException {
         return ResponseEntity.ok().body(movieService.create(movie));
     }

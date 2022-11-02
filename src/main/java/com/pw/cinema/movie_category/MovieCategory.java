@@ -5,7 +5,9 @@ import com.pw.cinema.movie.Movie;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "movie_category")
@@ -17,11 +19,21 @@ public class MovieCategory {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "movieCategories")
-    private List<Movie> movies;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "movieCategories")
+//    @JsonIgnore
+    private Set<Movie> movies = new HashSet<>();
 
 
     public MovieCategory() {
+    }
+
+    public MovieCategory(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
@@ -48,11 +60,11 @@ public class MovieCategory {
         this.description = description;
     }
 
-    public List<Movie> getMovies() {
+    public Set<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(Set<Movie> movies) {
         this.movies = movies;
     }
 }

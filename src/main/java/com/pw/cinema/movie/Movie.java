@@ -4,7 +4,11 @@ import com.pw.cinema.movie_category.MovieCategory;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import javax.xml.catalog.Catalog;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "movie")
@@ -19,11 +23,15 @@ public class Movie {
     private String name;
     private String description;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinTable(name = "movie_has_categories",
-            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_category_id", referencedColumnName = "id"))
-    private List<MovieCategory> movieCategories;
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_category_id"))
+    private Set<MovieCategory> movieCategories = new HashSet<>();
 
 
     public Movie() {
@@ -80,11 +88,27 @@ public class Movie {
         this.description = description;
     }
 
-    public List<MovieCategory> getMovieCategories() {
+    public Set<MovieCategory> getMovieCategories() {
         return movieCategories;
     }
 
-    public void setMovieCategories(List<MovieCategory> movieCategories) {
+    public void setMovieCategories(Set<MovieCategory> movieCategories) {
         this.movieCategories = movieCategories;
+        movieCategories.forEach(movieCategory -> movieCategory.getMovies().add(this));
+    }
+
+    public void addCategory(MovieCategory movieCategory) {
+        this.movieCategories.add(movieCategory);
+        movieCategory.getMovies().add(this);
+    }
+
+    public void removeCategory(Long categoryId) {
+        MovieCategory movieCategory =
+                this.movieCategories.stream().filter(mc -> Objects.equals(mc.getId(), categoryId)).findFirst().orElse(null);
+        if (movieCategory != null) {
+            this.movieCategories.remove(movieCategory);
+            movieCategory.getMovies().remove(this);
+        }
+
     }
 }
