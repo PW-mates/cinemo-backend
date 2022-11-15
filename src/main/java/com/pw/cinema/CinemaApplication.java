@@ -36,7 +36,7 @@ public class CinemaApplication {
                     System.getenv("ADMIN_PASSWORD"),
                     new ArrayList<>()));
 
-            userService.saveUser(new User("Jager",
+            userService.saveUser(new User("Jagger",
                     "Meister",
                     System.getenv("USER1_USERNAME"),
                     System.getenv("USER1_PASSWORD"),
