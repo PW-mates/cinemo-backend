@@ -28,9 +28,9 @@ jobs:
             name: Build and push
             uses: docker/build-push-action@v3
             with:
-            context: .
-            push: true
-            tags: clovers1254/cinemo_backend:latest
+                context: .
+                push: true
+                tags: clovers1254/cinemo_backend:latest
     build:
         runs-on: ubuntu-latest
         steps:
