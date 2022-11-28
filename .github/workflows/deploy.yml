@@ -31,15 +31,12 @@ jobs:
                 context: .
                 push: true
                 tags: clovers1254/cinemo_backend:latest
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Trigger remote command
-              uses: appleboy/ssh-action@master
-              with:
-                  host: ${{ secrets.HOST }}
-                  username: ${{ secrets.USERNAME }}
-                  password: ${{ secrets.PASSWORD }}
-                  port: ${{ secrets.PORT }}
-                  script: |
-                      sh ~/cinemo/cinemo-backend.sh
+        - name: Trigger remote command
+            uses: appleboy/ssh-action@master
+            with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                password: ${{ secrets.PASSWORD }}
+                port: ${{ secrets.PORT }}
+                script: |
+                    sh ~/cinemo/cinemo-backend.sh
