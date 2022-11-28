@@ -31,7 +31,8 @@ jobs:
                 context: .
                 push: true
                 tags: clovers1254/cinemo_backend:latest
-        - name: Trigger remote command
+        - 
+            name: Trigger remote command
             uses: appleboy/ssh-action@master
             with:
                 host: ${{ secrets.HOST }}
