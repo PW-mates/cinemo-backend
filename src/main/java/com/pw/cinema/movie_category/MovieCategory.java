@@ -1,14 +1,11 @@
 package com.pw.cinema.movie_category;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pw.cinema.movie.Movie;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "movie_category")
@@ -18,28 +15,13 @@ public class MovieCategory {
     private Long id;
     @NotNull
     private String name;
-    private String slug;
+    private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "category")
-    @JsonIgnore
-    private Set<Movie> movies = new HashSet<>();
+    @ManyToMany(mappedBy = "movieCategories")
+    private List<Movie> movies;
 
 
     public MovieCategory() {
-    }
-
-    public MovieCategory(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "MovieCategory";
     }
 
     public Long getId() {
@@ -58,19 +40,19 @@ public class MovieCategory {
         this.name = name;
     }
 
-    public String getSlug() {
-        return slug;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSlug(String slug) {
-        this.slug = slug;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Set<Movie> getMovies() {
+    public List<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(Set<Movie> movies) {
+    public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
 }

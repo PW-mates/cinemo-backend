@@ -4,8 +4,7 @@ import com.pw.cinema.movie_category.MovieCategory;
 import lombok.NonNull;
 
 import javax.persistence.*;
-import javax.xml.catalog.Catalog;
-import java.util.*;
+import java.util.List;
 
 @Entity
 @Table(name = "movie")
@@ -14,27 +13,17 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
-    private String title;
+    private Long length;
+    private String ageRestriction;
+    @NonNull
+    private String name;
     private String description;
-    private String director;
-    private String distributor;
-    private Date releaseDate;
-    private Long duration;
-    private Long rating;
-    private String posterPhoto;
-    private String trailerUrl;
-    private Date showingFrom;
-    private Date showingTo;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany
     @JoinTable(name = "movie_has_categories",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_category_id"))
-    private Set<MovieCategory> category = new HashSet<>();
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_category_id", referencedColumnName = "id"))
+    private List<MovieCategory> movieCategories;
 
 
     public Movie() {
@@ -42,7 +31,13 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Movie";
+        return "Movie{" +
+                "id=" + id +
+                ", length='" + length + '\'' +
+                ", ageRestriction='" + ageRestriction + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 
     public Long getId() {
@@ -53,84 +48,28 @@ public class Movie {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public Long getLength() {
+        return length;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLength(Long length) {
+        this.length = length;
     }
 
-    public String getDirector() {
-        return director;
+    public String getAgeRestriction() {
+        return ageRestriction;
     }
 
-    public void setDirector(String director) {
-        this.director = director;
+    public void setAgeRestriction(String ageRestriction) {
+        this.ageRestriction = ageRestriction;
     }
 
-    public String getDistributor() {
-        return distributor;
+    public String getName() {
+        return name;
     }
 
-    public void setDistributor(String distributor) {
-        this.distributor = distributor;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public Long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Long duration) {
-        this.duration = duration;
-    }
-
-    public Long getRating() {
-        return rating;
-    }
-
-    public void setRating(Long rating) {
-        this.rating = rating;
-    }
-
-    public String getPosterPhoto() {
-        return posterPhoto;
-    }
-
-    public void setPosterPhoto(String posterPhoto) {
-        this.posterPhoto = posterPhoto;
-    }
-
-    public String getTrailerUrl() {
-        return trailerUrl;
-    }
-
-    public void setTrailerUrl(String trailerUrl) {
-        this.trailerUrl = trailerUrl;
-    }
-
-    public Date getShowingFrom() {
-        return showingFrom;
-    }
-
-    public void setShowingFrom(Date showingFrom) {
-        this.showingFrom = showingFrom;
-    }
-
-    public Date getShowingTo() {
-        return showingTo;
-    }
-
-    public void setShowingTo(Date showingTo) {
-        this.showingTo = showingTo;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -141,23 +80,11 @@ public class Movie {
         this.description = description;
     }
 
-    public Set<MovieCategory> getCategory() {
-        return category;
+    public List<MovieCategory> getMovieCategories() {
+        return movieCategories;
     }
 
-    public void addCategories(Set<MovieCategory> newCategory) {
-        this.category.addAll(newCategory);
-//        movieCategory.getMovies().add(this);
-//        movieCategories.forEach(movieCategory -> movieCategory.getMovies().add(this));
+    public void setMovieCategories(List<MovieCategory> movieCategories) {
+        this.movieCategories = movieCategories;
     }
-//
-//    public void removeCategory(Long categoryId) {
-//        MovieCategory movieCategory =
-//                this.movieCategories.stream().filter(mc -> Objects.equals(mc.getId(), categoryId)).findFirst().orElse(null);
-//        if (movieCategory != null) {
-//            this.movieCategories.remove(movieCategory);
-//            movieCategory.getMovies().remove(this);
-//        }
-//
-//    }
 }
