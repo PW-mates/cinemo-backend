@@ -35,9 +35,9 @@ jobs:
             name: Trigger remote command
             uses: appleboy/ssh-action@master
             with:
-                host: ${{ secrets.HOST }}
-                username: ${{ secrets.USERNAME }}
-                password: ${{ secrets.PASSWORD }}
-                port: ${{ secrets.PORT }}
+                host: ${{ secrets.SERVER_SSH_HOST }}
+                username: ${{ secrets.SERVER_SSH_USERNAME }}
+                password: ${{ secrets.SERVER_SSH_PASSWORD }}
+                port: ${{ secrets.SERVER_SSH_PORT }}
                 script: |
                     sh ~/cinemo/cinemo-backend.sh
