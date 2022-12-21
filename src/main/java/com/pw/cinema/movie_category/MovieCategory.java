@@ -4,7 +4,6 @@ package com.pw.cinema.movie_category;
 import com.pw.cinema.movie.Movie;
 import com.sun.istack.NotNull;
 
-
 import javax.persistence.*;
 import java.util.List;
 
