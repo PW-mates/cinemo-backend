@@ -1,12 +1,10 @@
 package com.pw.cinema.movie_category;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
+@Repository
 public interface MovieCategoryRepository extends JpaRepository<MovieCategory, Long> {
     MovieCategory findByName(String name);
-//    List<MovieCategory> findAllByMoviesId(Long movieId);
-    List<MovieCategory> findMovieCategoriesByMoviesId(Long movieId);
-
 }

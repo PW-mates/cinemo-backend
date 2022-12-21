@@ -12,11 +12,15 @@ import java.util.*;
 @Service
 public class MovieService {
 
-    @Autowired
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
+
+    public MovieService(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
+
 
     public Object create(Movie movie) throws AlreadyExistsException {
-        if (movieRepository.findByName(movie.getTitle()) != null) {
+        if (movieRepository.findByTitle(movie.getTitle()) != null) {
             throw new AlreadyExistsException("Movie with that name already exists");
         }
         Map<String, Object> response = new HashMap<>();
@@ -60,15 +64,15 @@ public class MovieService {
         return response;
     }
 
-    public Object uploadPoster(String poster, Long id) {
-        Movie movie = movieRepository.findById(id).get();
-        Map<String, Object> response = new HashMap<>();
-        movie.setPosterPhoto(poster);
-        response.put("data", movieRepository.save(movie));
-        response.put("message", "Successfully found movie");
-        response.put("success", true);
-        return response;
-    }
+//    public Object uploadPoster(String poster, Long id) {
+//        Movie movie = movieRepository.findById(id).get();
+//        Map<String, Object> response = new HashMap<>();
+//        movie.setPosterPhoto(poster);
+//        response.put("data", movieRepository.save(movie));
+//        response.put("message", "Successfully found movie");
+//        response.put("success", true);
+//        return response;
+//    }
 //
 //    public Object addCategoryToMovie(Long movieId, Long categoryId) {
 //        Movie movie = movieRepository.findById(movieId).get();

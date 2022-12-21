@@ -22,7 +22,6 @@ public class MovieCategory {
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-                    CascadeType.PERSIST,
                     CascadeType.MERGE
             },
             mappedBy = "category")

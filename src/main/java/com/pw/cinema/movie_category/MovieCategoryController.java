@@ -1,6 +1,7 @@
 package com.pw.cinema.movie_category;
 
 import com.pw.cinema.exceptions.AlreadyExistsException;
+import com.pw.cinema.exceptions.HasMoviesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,35 +9,36 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class MovieCategoryController {
 
-    @Autowired
-    private MovieCategoryService movieCategoryService;
+    private final MovieCategoryService movieCategoryService;
 
-    @GetMapping(path = "/movies/categories")
+    public MovieCategoryController(MovieCategoryService movieCategoryService) {
+        this.movieCategoryService = movieCategoryService;
+    }
+
+
+    @GetMapping(path = "/movie-categories")
     public ResponseEntity<Object> getListMovieCategories() {
         return ResponseEntity.ok().body(movieCategoryService.getAllCategories());
     }
 
-    // Just for testing Request Body to use in Movie
-    @GetMapping(path = "/movies/category/id")
-    public ResponseEntity<Object> getCategory(@RequestBody MovieCategory movieCategory) {
-        return ResponseEntity.ok().body(movieCategoryService.getCategory(movieCategory));
+    @GetMapping(path = "/movie-categories/{id}")
+    public ResponseEntity<Object> getCategory(@PathVariable Long id) {
+        return ResponseEntity.ok().body(movieCategoryService.getCategory(id));
     }
 
-
-    @PostMapping(path = "/movies/categories")
-    public ResponseEntity<Object> addMovieCategories(@RequestBody MovieCategory movieCategory) throws AlreadyExistsException {
+    @PostMapping(path = "/movie-categories")
+    public ResponseEntity<Object> createMovieCategories(@RequestBody MovieCategory movieCategory) throws AlreadyExistsException {
         return ResponseEntity.ok().body(movieCategoryService.create(movieCategory));
     }
 
-    @PatchMapping(path = "/movies/category")
+    @PatchMapping(path = "/movie-categories/{id}")
     public ResponseEntity<Object> updateMovieCategories(@RequestBody MovieCategory movieCategory,
-                                                        @RequestParam Long id) {
+                                                        @PathVariable Long id) {
         return ResponseEntity.ok().body(movieCategoryService.updateCategory(movieCategory, id));
     }
 
-
-    @DeleteMapping(path = "/movies/category")
-    public ResponseEntity<Object> deleteMovieCategory(@RequestParam Long id) {
+    @DeleteMapping(path = "/movie-categories/{id}")
+    public ResponseEntity<Object> deleteMovieCategory(@PathVariable Long id) throws HasMoviesException {
         return ResponseEntity.ok().body(movieCategoryService.deleteCategory(id));
     }
 

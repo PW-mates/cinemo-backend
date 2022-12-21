@@ -28,7 +28,6 @@ public class Movie {
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
-                    CascadeType.PERSIST,
                     CascadeType.MERGE
             })
     @JoinTable(name = "movie_has_categories",
@@ -146,6 +145,8 @@ public class Movie {
     }
 
     public void addCategories(Set<MovieCategory> newCategory) {
+        Set<MovieCategory> categorySet = null;
+
         this.category.addAll(newCategory);
 //        movieCategory.getMovies().add(this);
 //        movieCategories.forEach(movieCategory -> movieCategory.getMovies().add(this));
