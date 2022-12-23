@@ -1,15 +1,17 @@
 package com.pw.cinema.user;
 
 
-import com.pw.cinema.theater.Theater;
+import com.pw.cinema.role.Role;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
@@ -33,4 +35,5 @@ public class UserDto {
     String phone;
     String profilePicture;
     String status;
+    Collection<Role> roles = new ArrayList<>();
 }

@@ -1,12 +1,14 @@
 package com.pw.cinema.user;
 
 import com.pw.cinema.role.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -15,6 +17,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @Table(name = "user")
 public class User {
+    @ManyToMany(fetch = FetchType.EAGER)
+    Collection<Role> roles = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,8 +39,6 @@ public class User {
     String phone;
     String profilePicture;
     String status;
-    @ManyToMany(fetch = FetchType.EAGER)
-    Collection<Role> roles = new ArrayList<>();
 
     public User(String firstName, String lastName, String username, String password, Collection<Role> roles) {
         this.firstName = firstName;
