@@ -1,9 +1,9 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.5'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
     id("com.github.nbaztec.coveralls-jacoco") version "1.2.15"
-	id "jacoco"
+    id "jacoco"
 }
 
 group = 'com.pw'
@@ -11,30 +11,28 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
-	mavenCentral()
-	jcenter()
+    mavenCentral()
+    jcenter()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation group: 'com.auth0', name: 'java-jwt', version: '4.2.1'
+    implementation 'org.json:json:20220924'
+	implementation 'org.modelmapper:modelmapper:3.1.1'
 
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
 
-	compileOnly 'org.projectlombok:lombok:1.18.24'
-	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-	testCompileOnly 'org.projectlombok:lombok:1.18.24'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
-
-	// https://mvnrepository.com/artifact/com.auth0/java-jwt
-	implementation group: 'com.auth0', name: 'java-jwt', version: '4.2.1'
-
-	implementation 'org.json:json:20220924'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 jacoco {
@@ -49,8 +47,8 @@ jacocoTestReport {
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
-	jacoco {
+    useJUnitPlatform()
+    jacoco {
         destinationFile = file("$buildDir/jacoco/test.exec")
     }
 }
