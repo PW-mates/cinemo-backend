@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,17 +17,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -48,7 +53,7 @@ public class UserService implements UserDetailsService {
         log.info("Fetching all users");
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
-        resp.put("data", userRepository.findAll());
+        resp.put("data", userRepository.findAll().stream().map(this::convertEntityToDto).collect(Collectors.toList()));
         resp.put("message", "Successful fetching data");
         return resp;
     }
@@ -58,13 +63,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    public User saveUser(User newUser) {
+    public UserDto saveUser(User newUser) {
 //        User findUserByUsername = userRepository.findByUsername(newUser.getUsername());
 //        if (findUserByUsername == null)
 //            throw new IllegalStateException("Username is already taken!");
         log.info("Saving new user to database {}", newUser.getUsername());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        return userRepository.save(newUser);
+        return convertEntityToDto(userRepository.save(newUser));
     }
 
     public String getUsernameByJWT(HttpHeaders authorizationHeader) {
@@ -81,7 +86,7 @@ public class UserService implements UserDetailsService {
         if (user == null) throw new UsernameNotFoundException("Username not found");
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
-        resp.put("data", user);
+        resp.put("data", convertEntityToDto(user));
         resp.put("message", "Successful fetching data");
         return resp;
     }
@@ -90,7 +95,12 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserById(id);
     }
 
-    public Object updateUser(User user) {
-        return userRepository.save(user);
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+    private UserDto convertEntityToDto(User user) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(user, UserDto.class);
     }
 }
