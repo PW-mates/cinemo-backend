@@ -45,4 +45,16 @@ public class TheaterService {
         resp.put("message", "Successful fetching data");
         return resp;
     }
+
+    public Object updateTheater(Long id, Theater theater) {
+        if (!theaterRepository.existsById(id))
+            throw new IllegalStateException("Theater with id doesn't exist");
+        theater.setId(id);
+        Theater savedTheater = theaterRepository.save(theater);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", convertEntityToDto(savedTheater));
+        resp.put("message", "Successful fetching data");
+        return resp;
+    }
 }
