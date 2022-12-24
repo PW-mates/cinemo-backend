@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TheaterService {
@@ -33,5 +35,14 @@ public class TheaterService {
     private TheaterDto convertEntityToDto(Theater theater) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         return modelMapper.map(theater, TheaterDto.class);
+    }
+
+    public Object getTheaters() {
+        List<Theater> theaters = theaterRepository.findAll();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", theaters.stream().map(this::convertEntityToDto).collect(Collectors.toList()));
+        resp.put("message", "Successful fetching data");
+        return resp;
     }
 }
