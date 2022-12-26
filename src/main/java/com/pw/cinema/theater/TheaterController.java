@@ -24,4 +24,9 @@ public class TheaterController {
     public ResponseEntity<Object> updateTheater(@RequestBody Theater theater, @PathVariable("id") Long id) {
         return ResponseEntity.ok().body(theaterService.updateTheater(id, theater));
     }
+
+    @GetMapping(path = "theaters/{id}")
+    public ResponseEntity<Object> getTheater(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(theaterService.getTheater(id));
+    }
 }
