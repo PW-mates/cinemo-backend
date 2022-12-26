@@ -29,4 +29,9 @@ public class TheaterController {
     public ResponseEntity<Object> getTheater(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(theaterService.getTheater(id));
     }
+
+    @DeleteMapping(path = "theaters/{id}")
+    public ResponseEntity<Object> deleteTheater(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(theaterService.deleteTheater(id));
+    }
 }

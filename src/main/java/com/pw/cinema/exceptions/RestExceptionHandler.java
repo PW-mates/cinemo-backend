@@ -36,6 +36,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return responseException(exception);
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(IllegalStateException.class)
+    public Map<String, Object> doesBotExistException(IllegalStateException exception) {
+        return responseException(exception);
+    }
+
     public Map<String, Object> responseException(Exception exception) {
         Map<String, Object> errorMap = new HashMap<>();
         errorMap.put("success", false);

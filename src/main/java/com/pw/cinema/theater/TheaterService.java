@@ -32,7 +32,7 @@ public class TheaterService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", convertEntityToDto(savedTheater));
-        resp.put("message", "Successful fetching data");
+        resp.put("message", "Successful create theater");
         return resp;
     }
 
@@ -58,7 +58,7 @@ public class TheaterService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", convertEntityToDto(savedTheater));
-        resp.put("message", "Successful fetching data");
+        resp.put("message", "Successful update theater");
         return resp;
     }
 
@@ -72,6 +72,15 @@ public class TheaterService {
         resp.put("success", true);
         resp.put("data", data);
         resp.put("message", "Successful fetching data");
+        return resp;
+    }
+
+    public Object deleteTheater(Long id) {
+        Theater theater = theaterRepository.findById(id).orElseThrow(() -> new IllegalStateException("Theater with id doesn't exist"));
+        theaterRepository.deleteById(id);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("message", "Successful delete");
         return resp;
     }
 }
