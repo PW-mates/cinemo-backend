@@ -1,5 +1,6 @@
 package com.pw.cinema.user;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -31,8 +32,8 @@ public class UserController {
 
     @PostMapping(path = "/account/user/save")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
+        return ResponseEntity.ok().body(userService.saveUser(user));
     }
 
     @GetMapping(path = "/account/info")
@@ -60,4 +61,15 @@ public class UserController {
         return new ResponseEntity<>(
                 resp, HttpStatus.OK);
     }
+
+    @PostMapping(path = "/account/password")
+    public ResponseEntity<Object> updatePassword(@RequestHeader HttpHeaders header, @RequestBody ChangingPassword changingPassword) {
+        return ResponseEntity.ok().body(userService.updatePassword(header, changingPassword));
+    }
+}
+
+@Data
+class ChangingPassword {
+    private String oldPassword;
+    private String newPassword;
 }

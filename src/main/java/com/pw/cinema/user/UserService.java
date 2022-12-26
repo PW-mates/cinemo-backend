@@ -35,13 +35,8 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            log.error("User not found!");
-            throw new UsernameNotFoundException("User not found!");
-        } else {
-            log.info("User found: {}", username);
-        }
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("Username not found"));
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
@@ -60,7 +55,8 @@ public class UserService implements UserDetailsService {
 
     public User getUser(String username) {
         log.info("Fetching user {}", username);
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("Username not found"));
     }
 
     public UserDto saveUser(User newUser) {
@@ -82,8 +78,8 @@ public class UserService implements UserDetailsService {
 
     public Object getUserByJWT(HttpHeaders authorizationHeader) {
         String username = getUsernameByJWT(authorizationHeader);
-        User user = userRepository.findByUsername(username);
-        if (user == null) throw new UsernameNotFoundException("Username not found");
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("Username not found"));
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", convertEntityToDto(user));
@@ -102,5 +98,19 @@ public class UserService implements UserDetailsService {
     private UserDto convertEntityToDto(User user) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         return modelMapper.map(user, UserDto.class);
+    }
+
+    public Object updatePassword(HttpHeaders header, ChangingPassword changingPassword) {
+        String username = getUsernameByJWT(header);
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalStateException("Current userdata is not matched or not found!"));
+        if (!passwordEncoder.matches(changingPassword.getOldPassword(), user.getPassword()))
+            throw new IllegalStateException("Old password doesn't match");
+        user.setPassword(passwordEncoder.encode(changingPassword.getNewPassword()));
+        userRepository.save(user);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("message", "Successful update password");
+        return resp;
     }
 }
