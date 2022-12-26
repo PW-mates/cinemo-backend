@@ -35,12 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/account/login");
-
         http.csrf().disable();
-        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        http.cors().configurationSource(c -> {
+            CorsConfiguration corsCfg = new CorsConfiguration();
+            corsCfg.applyPermitDefaultValues();
+            corsCfg.addAllowedOriginPattern("*");
+            corsCfg.addAllowedMethod(CorsConfiguration.ALL);
+            return corsCfg;
+        });
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/account/login/**").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/manage/users/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
