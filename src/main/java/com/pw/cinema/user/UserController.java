@@ -55,7 +55,7 @@ public class UserController {
         }
         userService.updateUser(user);
         resp.put("success", true);
-        resp.put("message", "Successful set new user!");
+        resp.put("message", "Successful update user!");
         resp.put("data", user);
         return new ResponseEntity<>(
                 resp, HttpStatus.OK);
