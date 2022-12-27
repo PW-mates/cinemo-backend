@@ -3,6 +3,7 @@ package com.pw.cinema.room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -13,7 +14,11 @@ public class RoomController {
 
     @PostMapping(path="rooms")
     public ResponseEntity<Object> createRoom(@RequestBody Room room) {
-        System.out.println("ok");
         return ResponseEntity.ok().body(roomService.createRoom(room));
+    }
+
+    @GetMapping(path = "rooms")
+    public ResponseEntity<Object> getRooms() {
+        return ResponseEntity.ok().body(roomService.getRooms());
     }
 }
