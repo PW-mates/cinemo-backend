@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +46,17 @@ public class RoomService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", savedRooms);
+        resp.put("message", "Successful fetching room data");
+        return resp;
+    }
+
+    public Object getRoom(Long id) {
+        Room savedRoom = roomRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Room with id not found")
+        );
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", convertEntityToDto(savedRoom));
         resp.put("message", "Successful fetching room data");
         return resp;
     }
