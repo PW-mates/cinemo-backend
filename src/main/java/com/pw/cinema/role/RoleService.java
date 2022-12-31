@@ -3,6 +3,7 @@ package com.pw.cinema.role;
 import com.pw.cinema.user.User;
 import com.pw.cinema.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,8 @@ public class RoleService {
 
     public void addRoleToUser(String username, String roleName){
         log.info("Add new role {} to user {}", roleName, username);
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("Username not found"));
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
     }
