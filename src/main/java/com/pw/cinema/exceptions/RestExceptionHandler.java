@@ -37,10 +37,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return responseException(exception);
     }
 
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HasMoviesException.class)
     public Map<String, Object> handleHasMoviesException(HasMoviesException exception) {
+            return responseException(exception);
+    }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(IllegalStateException.class)
