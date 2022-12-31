@@ -21,5 +21,10 @@
       <option name="name" value="BintrayJCenter" />
       <option name="url" value="https://jcenter.bintray.com/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="317fc540-b904-4651-b541-4f407202105d" />
+      <option name="name" value="317fc540-b904-4651-b541-4f407202105d" />
+      <option name="url" value="https://mvnrepository.com/artifact/mysql/mysql-connector-java" />
+    </remote-repository>
   </component>
 </project>

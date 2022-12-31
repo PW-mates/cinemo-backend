@@ -1,11 +1,15 @@
 package com.pw.cinema.movie;
 
 import com.pw.cinema.movie_category.MovieCategory;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "movie")
 public class Movie {
@@ -13,78 +17,28 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
-    private Long length;
-    private String ageRestriction;
-    @NonNull
-    private String name;
+    private String title;
     private String description;
+    private String director;
+    private String distributor;
+    private Date releaseDate;
+    private Long duration;
+    private Long rating;
+    private String posterPhoto;
+    private String trailerUrl;
+    private Date showingFrom;
+    private Date showingTo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.MERGE
+            })
     @JoinTable(name = "movie_has_categories",
-            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_category_id", referencedColumnName = "id"))
-    private List<MovieCategory> movieCategories;
-
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_category_id"))
+    private Set<MovieCategory> category = new HashSet<>();
 
     public Movie() {
     }
 
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", length='" + length + '\'' +
-                ", ageRestriction='" + ageRestriction + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getLength() {
-        return length;
-    }
-
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
-    public String getAgeRestriction() {
-        return ageRestriction;
-    }
-
-    public void setAgeRestriction(String ageRestriction) {
-        this.ageRestriction = ageRestriction;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<MovieCategory> getMovieCategories() {
-        return movieCategories;
-    }
-
-    public void setMovieCategories(List<MovieCategory> movieCategories) {
-        this.movieCategories = movieCategories;
-    }
 }
