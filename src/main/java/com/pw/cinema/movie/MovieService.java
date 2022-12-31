@@ -66,13 +66,9 @@ public class MovieService {
     }
 
     public Object uploadPoster(Long id, String poster) {
-        //TODO
-        Movie movie = movieRepository.findById(id).get();
-        Map<String, Object> response = new HashMap<>();
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not found movie."));
         movie.setPosterPhoto(poster);
-        response.put("data", movieRepository.save(movie));
-        response.put("message", "Successfully found movie");
-        response.put("success", true);
-        return response;
+        Movie savedMovie = movieRepository.save(movie);
+        return response(savedMovie, "Successfully added poster.");
     }
 }
