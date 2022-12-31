@@ -21,24 +21,24 @@ public class MovieCategoryController {
         return ResponseEntity.ok().body(movieCategoryService.getAllCategories());
     }
 
-    @GetMapping(path = "/movie-categories/{id}")
-    public ResponseEntity<Object> getCategory(@PathVariable Long id) {
-        return ResponseEntity.ok().body(movieCategoryService.getCategory(id));
-    }
-
     @PostMapping(path = "/movie-categories")
     public ResponseEntity<Object> createMovieCategories(@RequestBody MovieCategory movieCategory) throws AlreadyExistsException {
         return ResponseEntity.ok().body(movieCategoryService.create(movieCategory));
     }
 
+    @GetMapping(path = "/movie-categories/{id}")
+    public ResponseEntity<Object> getCategory(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(movieCategoryService.getCategory(id));
+    }
+
     @PatchMapping(path = "/movie-categories/{id}")
     public ResponseEntity<Object> updateMovieCategories(@RequestBody MovieCategory movieCategory,
-                                                        @PathVariable Long id) {
+                                                        @PathVariable("id") Long id) {
         return ResponseEntity.ok().body(movieCategoryService.updateCategory(movieCategory, id));
     }
 
     @DeleteMapping(path = "/movie-categories/{id}")
-    public ResponseEntity<Object> deleteMovieCategory(@PathVariable Long id) throws HasMoviesException {
+    public ResponseEntity<Object> deleteMovieCategory(@PathVariable("id") Long id) throws HasMoviesException {
         return ResponseEntity.ok().body(movieCategoryService.deleteCategory(id));
     }
 

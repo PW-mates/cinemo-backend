@@ -4,12 +4,15 @@ package com.pw.cinema.movie_category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pw.cinema.movie.Movie;
 import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "movie_category")
 public class MovieCategory {
@@ -34,42 +37,5 @@ public class MovieCategory {
 
     public MovieCategory(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "MovieCategory";
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public Set<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(Set<Movie> movies) {
-        this.movies = movies;
     }
 }
