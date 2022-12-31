@@ -4,12 +4,14 @@ import com.pw.cinema.exceptions.AlreadyExistsException;
 import com.pw.cinema.exceptions.HasMoviesException;
 import com.pw.cinema.movie.Movie;
 import com.pw.cinema.movie.MovieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.pw.cinema.utils.Utils.response;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 public class MovieCategoryService {
@@ -21,56 +23,43 @@ public class MovieCategoryService {
     }
 
     public Object getCategory(Long id) {
-        MovieCategory movieCategory1 = movieCategoryRepository.findById(id).get();
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", movieCategory1);
-        response.put("message", "Successfully found category");
-        response.put("success", true);
-        return response;
+        MovieCategory movieCategory = movieCategoryRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Not found category with this id"));
+        return response(movieCategory, "Successfully found category");
     }
 
     public Object getAllCategories() {
         List<MovieCategory> movieCategoryList = movieCategoryRepository.findAll();
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", movieCategoryList);
-        response.put("message", "Successfully found all categories");
-        response.put("success", true);
-        return response;
+        return response(movieCategoryList, "Successfully found all categories");
     }
-
 
     public Object create(MovieCategory movieCategory) throws AlreadyExistsException {
         if (movieCategoryRepository.findByName(movieCategory.getName()) != null) {
             throw new AlreadyExistsException("Movie with that name already exists");
         }
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", movieCategoryRepository.save(movieCategory));
-        response.put("message", "Successfully added new category");
-        response.put("success", true);
-        return response;
+        MovieCategory newMovieCategory = movieCategoryRepository.save(movieCategory);
+        return response(newMovieCategory, "Successfully added new category");
     }
 
-
     public Object updateCategory(MovieCategory categoryChanges, Long id) {
-        MovieCategory movieCategory = movieCategoryRepository.findById(id).get();
+        MovieCategory movieCategory = movieCategoryRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Not found category with this id"));
         movieCategory.setName(categoryChanges.getName());
         movieCategory.setSlug(categoryChanges.getSlug());
         // movies add or change
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", movieCategoryRepository.save(movieCategory));
-        response.put("message", "Successfully updated category");
-        response.put("success", true);
-        return response;
+        MovieCategory savedCategory = movieCategoryRepository.save(movieCategory);
+        return response(savedCategory, "Successfully updated category");
     }
 
     public Object deleteCategory(Long id) throws HasMoviesException {
-        Map<String, Object> response = new HashMap<>();
-        MovieCategory movieCategory = movieCategoryRepository.findById(id).get();
+        MovieCategory movieCategory = movieCategoryRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Not found category with this id"));
         boolean isUsed = movieCategory.getMovies().size() > 0;
         if (isUsed) {
             throw new HasMoviesException("This category can not be deleted, because it includes movies");
         }
         movieCategoryRepository.deleteById(id);
+        Map<String, Object> response = new HashMap<>();
         response.put("message", "Successfully deleted this category");
         response.put("success", true);
         return response;

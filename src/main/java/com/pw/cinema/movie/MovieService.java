@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.pw.cinema.Utils.response;
+import static com.pw.cinema.utils.Utils.response;
 
 @Service
 public class MovieService {
@@ -19,7 +19,6 @@ public class MovieService {
         this.movieRepository = movieRepository;
         this.movieCategoryRepository = movieCategoryRepository;
     }
-
 
     public Object create(Movie movie) {
         Set<Long> movieCategoryIds =
@@ -64,6 +63,7 @@ public class MovieService {
                 "id " + id));
         return response(movie, "Successfully found movie");
     }
+
 
     public Object uploadPoster(Long id, String poster) {
         //TODO
