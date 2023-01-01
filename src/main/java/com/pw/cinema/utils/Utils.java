@@ -1,4 +1,4 @@
-package com.pw.cinema;
+package com.pw.cinema.utils;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,9 @@
 package com.pw.cinema.movie_category;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pw.cinema.exceptions.AlreadyExistsException;
 import com.pw.cinema.exceptions.HasMoviesException;
+import com.pw.cinema.utils.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +24,14 @@ public class MovieCategoryController {
     }
 
     @PostMapping(path = "/movie-categories")
-    public ResponseEntity<Object> createMovieCategories(@RequestBody MovieCategory movieCategory) throws AlreadyExistsException {
+    public ResponseEntity<Object> createMovieCategory(
+//            @JsonView(Views.Create.class)
+            @RequestBody @JsonView(Views.Create.class) MovieCategory movieCategory) throws AlreadyExistsException {
         return ResponseEntity.ok().body(movieCategoryService.create(movieCategory));
     }
 
     @GetMapping(path = "/movie-categories/{id}")
-    public ResponseEntity<Object> getCategory(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> getMovieCategory(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(movieCategoryService.getCategory(id));
     }
 

@@ -1,38 +1,44 @@
 package com.pw.cinema.movie;
 
 import com.pw.cinema.movie_category.MovieCategory;
+import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Id;
+import java.util.Date;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "movie")
-public class Movie {
+@Data
+public class MovieDto {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+    @NotNull
     private String title;
+    @NotNull
     private String description;
+    @NotNull
     private String director;
+    @NotNull
     private String distributor;
+    @NotNull
     private Date releaseDate;
+    @NotNull
     private Long duration;
+    @NotNull
     private Long rating;
+    @NotNull
     private String posterPhoto;
+    @NotNull
     private String trailerUrl;
+    @NotNull
     private Date showingFrom;
+    @NotNull
     private Date showingTo;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "movie_has_categories",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_category_id"))
-    private Set<MovieCategory> categories = new HashSet<>();
-
+    @NotNull
+    private Set<MovieCategory> categories;
 }
