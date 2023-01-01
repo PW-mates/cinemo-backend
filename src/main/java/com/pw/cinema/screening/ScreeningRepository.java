@@ -1,4 +1,8 @@
 package com.pw.cinema.screening;
 
-public interface ScreeningRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ScreeningRepository extends JpaRepository<Screening, Long> {
 }

@@ -5,6 +5,8 @@ import com.pw.cinema.movie.Movie;
 import com.pw.cinema.room.Room;
 import com.pw.cinema.theater.Theater;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,9 +22,14 @@ public class Screening {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    Movie movie;
-    Room room;
-    Theater theater;
     Date openSale;
     Date date;
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "movie_id")
+    Movie movie;
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "room_id")
+    Room room;
 }
