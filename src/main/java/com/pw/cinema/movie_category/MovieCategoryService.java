@@ -3,7 +3,11 @@ package com.pw.cinema.movie_category;
 import com.pw.cinema.exceptions.AlreadyExistsException;
 import com.pw.cinema.exceptions.HasMoviesException;
 import com.pw.cinema.movie.Movie;
+import com.pw.cinema.movie.MovieDto;
 import com.pw.cinema.movie.MovieRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.pw.cinema.utils.Utils.response;
@@ -12,24 +16,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieCategoryService {
 
     private final MovieCategoryRepository movieCategoryRepository;
+    final ModelMapper modelMapper;
 
-    public MovieCategoryService(MovieCategoryRepository movieCategoryRepository) {
+    public MovieCategoryService(MovieCategoryRepository movieCategoryRepository, ModelMapper modelMapper) {
         this.movieCategoryRepository = movieCategoryRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    public MovieCategoryDto convertEntityToDto(MovieCategory movieCategory) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(movieCategory, MovieCategoryDto.class);
     }
 
     public Object getCategory(Long id) {
         MovieCategory movieCategory = movieCategoryRepository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Not found category with this id"));
-        return response(movieCategory, "Successfully found category");
+        return response(convertEntityToDto(movieCategory), "Successfully found category");
     }
 
     public Object getAllCategories() {
-        List<MovieCategory> movieCategoryList = movieCategoryRepository.findAll();
+        List<MovieCategoryDto> movieCategoryList = movieCategoryRepository.findAll().stream().map(this::convertEntityToDto)
+                .collect(Collectors.toList());
         return response(movieCategoryList, "Successfully found all categories");
     }
 
@@ -48,7 +61,7 @@ public class MovieCategoryService {
         movieCategory.setSlug(categoryChanges.getSlug());
         // movies add or change
         MovieCategory savedCategory = movieCategoryRepository.save(movieCategory);
-        return response(savedCategory, "Successfully updated category");
+        return response(convertEntityToDto(savedCategory), "Successfully updated category");
     }
 
     public Object deleteCategory(Long id) throws HasMoviesException {

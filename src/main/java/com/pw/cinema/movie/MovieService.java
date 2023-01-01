@@ -2,6 +2,9 @@ package com.pw.cinema.movie;
 
 import com.pw.cinema.movie_category.MovieCategory;
 import com.pw.cinema.movie_category.MovieCategoryRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,26 +15,34 @@ import static com.pw.cinema.utils.Utils.response;
 @Service
 public class MovieService {
     private final MovieRepository movieRepository;
-
     private final MovieCategoryRepository movieCategoryRepository;
+    @Autowired
+    ModelMapper modelMapper;
 
     public MovieService(MovieRepository movieRepository, MovieCategoryRepository movieCategoryRepository) {
         this.movieRepository = movieRepository;
         this.movieCategoryRepository = movieCategoryRepository;
     }
 
+    public MovieDto convertEntityToDto(Movie movie) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(movie, MovieDto.class);
+    }
+
     public Object create(Movie movie) {
         Set<Long> movieCategoryIds =
-                movie.getCategory().stream().map(MovieCategory::getId).collect(Collectors.toSet());
+                movie.getCategories().stream().map(MovieCategory::getId).collect(Collectors.toSet());
         if (!movieCategoryRepository.existsAllByIdIn(movieCategoryIds))
             throw new NoSuchElementException("Not found categories.");
-        movie.setCategory(movieCategoryRepository.findAllByIdIn(movieCategoryIds));
+        movie.setCategories(movieCategoryRepository.findAllByIdIn(movieCategoryIds));
         Movie newMovie = movieRepository.save(movie);
         return response(newMovie, "Successfully added new movie");
     }
 
     public Object getMovieList() {
         List<Movie> movies = movieRepository.findAll();
+//        List<MovieDto> movies = movieRepository.findAll().stream().map(this::convertEntityToDto)
+//                .collect(Collectors.toList());
         return response(movies, "Successfully found movies");
     }
 
@@ -39,11 +50,11 @@ public class MovieService {
         if (!movieRepository.existsById(id))
             throw new NoSuchElementException("Not found movie with this id.");
         Set<Long> movieCategoryIds =
-                updatedMovie.getCategory().stream().map(MovieCategory::getId).collect(Collectors.toSet());
+                updatedMovie.getCategories().stream().map(MovieCategory::getId).collect(Collectors.toSet());
         if (!movieCategoryRepository.existsAllByIdIn(movieCategoryIds))
             throw new NoSuchElementException("Not found categories.");
         updatedMovie.setId(id);
-        updatedMovie.setCategory(movieCategoryRepository.findAllByIdIn(movieCategoryIds));
+        updatedMovie.setCategories(movieCategoryRepository.findAllByIdIn(movieCategoryIds));
         Movie savedMovie = movieRepository.save(updatedMovie);
         return response(savedMovie, "Successfully found movies");
     }

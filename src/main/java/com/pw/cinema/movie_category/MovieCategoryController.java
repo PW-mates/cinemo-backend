@@ -25,6 +25,7 @@ public class MovieCategoryController {
 
     @PostMapping(path = "/movie-categories")
     public ResponseEntity<Object> createMovieCategory(
+//            @JsonView(Views.Create.class)
             @RequestBody @JsonView(Views.Create.class) MovieCategory movieCategory) throws AlreadyExistsException {
         return ResponseEntity.ok().body(movieCategoryService.create(movieCategory));
     }
