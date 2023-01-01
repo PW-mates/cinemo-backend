@@ -4,7 +4,6 @@ import com.pw.cinema.movie.Movie;
 import com.pw.cinema.movie.MovieRepository;
 import com.pw.cinema.room.Room;
 import com.pw.cinema.room.RoomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import static com.pw.cinema.utils.Utils.response;
 

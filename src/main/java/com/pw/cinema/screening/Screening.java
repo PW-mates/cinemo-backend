@@ -3,7 +3,6 @@ package com.pw.cinema.screening;
 
 import com.pw.cinema.movie.Movie;
 import com.pw.cinema.room.Room;
-import com.pw.cinema.theater.Theater;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
