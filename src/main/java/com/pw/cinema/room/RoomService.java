@@ -62,12 +62,23 @@ public class RoomService {
     }
 
     public Object deleteRoom(Long id) {
-        Room savedRoom = roomRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("Room with id not found")
-        );
+        if (!roomRepository.existsById(id))
+            throw new IllegalStateException("Room with id doesn't exist");
         roomRepository.deleteById(id);
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
+        resp.put("message", "Successful delete room");
+        return resp;
+    }
+
+    public Object updateRoom(Long id, Room room) {
+        if (!roomRepository.existsById(id))
+            throw new IllegalStateException("Room with id doesn't exist");
+        room.setId(id);
+        Room savedRoom = roomRepository.save(room);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", convertEntityToDto(savedRoom));
         resp.put("message", "Successful delete room");
         return resp;
     }
