@@ -12,6 +12,11 @@ public class ScreeningController {
         this.screeningService = screeningService;
     }
 
+    @GetMapping(path="screenings")
+    public ResponseEntity<Object> getListOfScreening() {
+        return ResponseEntity.ok().body(screeningService.getAllScreenings());
+    }
+
     @PostMapping(path="screenings")
     public ResponseEntity<Object> createScreening(@RequestBody ScreeningDtoPure screening) {
         return ResponseEntity.ok().body(screeningService.createScreening(screening));

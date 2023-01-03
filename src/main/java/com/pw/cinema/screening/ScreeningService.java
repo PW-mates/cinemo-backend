@@ -7,8 +7,10 @@ import com.pw.cinema.room.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ScheduledExecutorService;
 
 import static com.pw.cinema.utils.Utils.response;
 
@@ -65,5 +67,10 @@ public class ScreeningService {
         response.put("message", "Successfully deleted screening");
         response.put("success", true);
         return response;
+    }
+
+    public Object getAllScreenings() {
+        List<Screening> screeningList = screeningRepository.findAll();
+        return response(screeningList, "Successfully found screenings");
     }
 }
