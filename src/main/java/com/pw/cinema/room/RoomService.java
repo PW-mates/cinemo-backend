@@ -60,4 +60,15 @@ public class RoomService {
         resp.put("message", "Successful fetching room data");
         return resp;
     }
+
+    public Object deleteRoom(Long id) {
+        Room savedRoom = roomRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Room with id not found")
+        );
+        roomRepository.deleteById(id);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("message", "Successful delete room");
+        return resp;
+    }
 }
