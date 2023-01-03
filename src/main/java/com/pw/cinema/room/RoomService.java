@@ -1,10 +1,12 @@
 package com.pw.cinema.room;
 
+import com.pw.cinema.seat.SeatService;
 import com.pw.cinema.theater.TheaterRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +22,17 @@ public class RoomService {
     TheaterRepository theaterRepository;
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    SeatService seatService;
 
+    @Transactional
     public Object createRoom(Room room) {
         room.setTheater(theaterRepository
                 .findById(room.getTheater().getId())
                 .orElseThrow(()
                         -> new IllegalStateException("Theater doesn't exist")));
         Room savedRoom = roomRepository.save(room);
+        seatService.createSerialSeats(room);
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", savedRoom);
