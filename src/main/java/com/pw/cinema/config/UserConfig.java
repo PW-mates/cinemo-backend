@@ -2,6 +2,8 @@ package com.pw.cinema.config;
 
 import com.pw.cinema.role.Role;
 import com.pw.cinema.role.RoleService;
+import com.pw.cinema.seat_type.SeatType;
+import com.pw.cinema.seat_type.SeatTypeService;
 import com.pw.cinema.user.User;
 import com.pw.cinema.user.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 @Configuration
 public class UserConfig {
     @Bean
-    CommandLineRunner run(UserService userService, RoleService roleService) {
+    CommandLineRunner run(UserService userService, RoleService roleService, SeatTypeService seatTypeService) {
         return args -> {
             roleService.saveRole(new Role(null, "ROLE_ADMIN"));
             roleService.saveRole(new Role(null, "ROLE_USER"));
@@ -38,6 +40,8 @@ public class UserConfig {
             roleService.addRoleToUser(System.getenv("ADMIN_USERNAME"), "ROLE_ADMIN");
             roleService.addRoleToUser(System.getenv("USER1_USERNAME"), "ROLE_USER");
             roleService.addRoleToUser(System.getenv("USER2_USERNAME"), "ROLE_USER");
+            seatTypeService.createSeatType(new SeatType(1L, "Classic"));
+            seatTypeService.createSeatType(new SeatType(2L, "VIP"));
         };
     }
 }
