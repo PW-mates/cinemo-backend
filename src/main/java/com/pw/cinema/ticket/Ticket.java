@@ -3,6 +3,7 @@ package com.pw.cinema.ticket;
 import com.pw.cinema.payment.Payment;
 import com.pw.cinema.screening.Screening;
 import com.pw.cinema.seat.Seat;
+import com.pw.cinema.ticket_type.TicketType;
 import com.pw.cinema.user.User;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -30,6 +31,10 @@ public class Ticket {
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Seat> seats;
+    @ManyToOne
+    @JoinColumn(name = "ticket_type_id")
+    @NotNull
+    TicketType ticketType;
     @ManyToOne
     @JoinColumn(name = "seller_id")
     @NotNull

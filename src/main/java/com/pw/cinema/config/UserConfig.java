@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 
-@Configuration
+//@Configuration
 public class UserConfig {
-    @Bean
+//    @Bean
     CommandLineRunner run(UserService userService, RoleService roleService, SeatTypeService seatTypeService) {
         return args -> {
             roleService.saveRole(new Role(null, "ROLE_ADMIN"));
