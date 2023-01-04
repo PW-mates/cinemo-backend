@@ -21,13 +21,13 @@ public class Movie {
     private String description;
     private String director;
     private String distributor;
-    private Date releaseDate;
+    private Long releaseDate;
     private Long duration;
     private Long rating;
     private String posterPhoto;
     private String trailerUrl;
-    private Date showingFrom;
-    private Date showingTo;
+    private Long showingFrom;
+    private Long showingTo;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "movie_has_categories",

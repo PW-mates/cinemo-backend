@@ -5,7 +5,6 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.Id;
-import java.util.Date;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -26,7 +25,7 @@ public class MovieDto {
     @NotNull
     private String distributor;
     @NotNull
-    private Date releaseDate;
+    private Long releaseDate;
     @NotNull
     private Long duration;
     @NotNull
@@ -36,9 +35,9 @@ public class MovieDto {
     @NotNull
     private String trailerUrl;
     @NotNull
-    private Date showingFrom;
+    private Long showingFrom;
     @NotNull
-    private Date showingTo;
+    private Long showingTo;
     @NotNull
     private Set<MovieCategory> categories;
 }

@@ -1,0 +1,17 @@
+drop table DATABASECHANGELOGLOCK;
+drop table DATABASECHANGELOG;
+drop table ticket_seats;
+drop table ticket;
+drop table payment;
+drop table screening;
+drop table movie_has_categories;
+drop table movie_category;
+drop table movie;
+drop table seat;
+drop table ticket_type;
+drop table seat_type;
+drop table room;
+drop table theater;
+drop table user_roles;
+drop table user;
+drop table role;
