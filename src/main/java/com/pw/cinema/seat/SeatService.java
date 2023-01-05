@@ -52,7 +52,7 @@ public class SeatService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", convertEntityToDto(savedSeat));
-        resp.put("message", "Successful fetching room data");
+        resp.put("message", "Successful fetching seat data");
         return resp;
     }
 
@@ -69,5 +69,21 @@ public class SeatService {
     public SeatDto convertEntityToDto(Seat seat) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         return modelMapper.map(seat, SeatDto.class);
+    }
+
+    public Object updateSeat(Long id, Seat seat) {
+        Seat savedSeat = seatRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Seat with id not found!"));
+        if (seat.getType() != null) {
+            SeatType seatType = seatTypeRepository
+                    .findById(seat.getType().getId())
+                    .orElseThrow(() -> new NoSuchElementException("SeatType with id not found!"));
+            savedSeat.setType(seatType);
+        }
+        savedSeat = seatRepository.save(savedSeat);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", convertEntityToDto(savedSeat));
+        resp.put("message", "Successful fetching seat data");
+        return resp;
     }
 }
