@@ -35,7 +35,7 @@ public class RoomService {
         seatService.createSerialSeats(room);
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
-        resp.put("data", savedRoom);
+        resp.put("data", convertEntityToDto(savedRoom));
         resp.put("message", "Successful create room");
         return resp;
     }
