@@ -113,4 +113,20 @@ public class UserService implements UserDetailsService {
         resp.put("message", "Successful update password");
         return resp;
     }
+
+    private UserBasicDto convertEntityToBasicDto(User user) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(user, UserBasicDto.class);
+    }
+
+    public Object getAccounts() {
+        List<UserBasicDto> accounts = userRepository
+                .findAll().stream()
+                .map(this::convertEntityToBasicDto).toList();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", accounts);
+        resp.put("message", "Successful fetching data");
+        return resp;
+    }
 }

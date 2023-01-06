@@ -32,7 +32,6 @@ public class UserController {
 
     @PostMapping(path = "/account/user/save")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
-//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.ok().body(userService.saveUser(user));
     }
 
@@ -60,6 +59,11 @@ public class UserController {
         resp.put("data", user);
         return new ResponseEntity<>(
                 resp, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "accounts")
+    public ResponseEntity<Object> getAccounts() {
+        return ResponseEntity.ok().body(userService.getAccounts());
     }
 
     @PostMapping(path = "/account/password")
