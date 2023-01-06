@@ -16,11 +16,8 @@ public class MovieCategoryDto {
 
     @Id
     private Long id;
-    @NotNull
     private String name;
-    @NotNull
     private String slug;
-    @NotNull
     private Set<Movie> movies;
 
 }
