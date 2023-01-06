@@ -16,4 +16,5 @@ public class SeatType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
+    String color;
 }
