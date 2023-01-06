@@ -1,13 +1,33 @@
 package com.pw.cinema.theater;
 
-import com.pw.cinema.user.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class TheaterServiceTest {
 
-    private TheaterService theaterService;
+    @Mock
+    private TheaterRepository theaterRepository;
+    @Autowired
+    private TheaterService theaterService ;
+
+    @BeforeEach
+    void setUp() {
+        theaterService = new TheaterService(theaterRepository);
+    }
 
     @Test
     void createTheater() {
@@ -30,6 +50,13 @@ class TheaterServiceTest {
 
     @Test
     void getTheaters() {
+        Object resp = theaterService.getTheaters();
+        Map<String, Object> expected = new HashMap<>();
+        List<Theater> theaters = new ArrayList<>();
+        expected.put("success", true);
+        expected.put("data", theaters);
+        expected.put("message", "Successful fetching data");
+        assertThat(resp).isEqualTo(expected);
     }
 
     @Test
