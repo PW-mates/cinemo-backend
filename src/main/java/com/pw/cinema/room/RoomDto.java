@@ -1,7 +1,6 @@
 package com.pw.cinema.room;
 
 import com.pw.cinema.theater.TheaterDtoLight;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

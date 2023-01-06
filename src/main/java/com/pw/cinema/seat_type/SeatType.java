@@ -1,6 +1,5 @@
 package com.pw.cinema.seat_type;
 
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,6 +15,5 @@ public class SeatType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NotNull
     String name;
 }

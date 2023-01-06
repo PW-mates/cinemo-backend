@@ -5,7 +5,6 @@ import com.pw.cinema.screening.Screening;
 import com.pw.cinema.seat.Seat;
 import com.pw.cinema.ticket_type.TicketType;
 import com.pw.cinema.user.User;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,33 +21,23 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NotNull
     String code;
     @ManyToOne
     @JoinColumn(name = "screening_id")
-    @NotNull
     Screening screening;
-    @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Seat> seats;
     @ManyToOne
     @JoinColumn(name = "ticket_type_id")
-    @NotNull
     TicketType ticketType;
     @ManyToOne
     @JoinColumn(name = "seller_id")
-    @NotNull
     User seller;
-    @NotNull
     float totalPrice;
-    @NotNull
     Long createAt;
-    @NotNull
     String paymentMethod;
     @ManyToOne
     @JoinColumn(name = "payment_id")
-    @NotNull
     Payment payment;
-    @NotNull
     String status;
 }
