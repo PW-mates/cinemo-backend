@@ -25,6 +25,10 @@ public class TheaterService {
     @Autowired
     RoomRepository roomRepository;
 
+    public TheaterService(TheaterRepository theaterRepository) {
+        this.theaterRepository = theaterRepository;
+    }
+
     public Object createTheater(Theater theater) {
         if (!userRepository.existsById(theater.getManager().getId()))
             throw new IllegalStateException("Manager doesn't exist");
