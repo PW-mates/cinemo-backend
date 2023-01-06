@@ -1,7 +1,6 @@
 package com.pw.cinema.movie;
 
 import com.pw.cinema.movie_category.MovieCategory;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.Id;

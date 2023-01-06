@@ -2,7 +2,6 @@ package com.pw.cinema.seat;
 
 import com.pw.cinema.room.RoomLightDto;
 import com.pw.cinema.seat_type.SeatType;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

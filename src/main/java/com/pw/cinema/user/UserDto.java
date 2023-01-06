@@ -2,7 +2,6 @@ package com.pw.cinema.user;
 
 
 import com.pw.cinema.role.Role;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

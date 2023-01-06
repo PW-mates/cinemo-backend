@@ -1,6 +1,5 @@
 package com.pw.cinema.payment;
 
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +15,6 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NotNull
     Long account;
     String currency;
     String status;
