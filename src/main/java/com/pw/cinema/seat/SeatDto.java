@@ -16,9 +16,7 @@ import javax.persistence.Id;
 public class SeatDto {
     @Id
     Long id;
-    @NotNull
     int row;
-    @NotNull
     int column;
     RoomLightDto room;
     SeatType type;

@@ -14,24 +14,14 @@ import javax.persistence.Id;
 public class TheaterDtoLight {
     @Id
     Long id;
-    @NotNull
     String name;
-    @NotNull
     String address;
-    @NotNull
     String city;
-    @NotNull
     String country;
-    @NotNull
     float latitude;
-    @NotNull
     float longitude;
-    @NotNull
     String phone;
-    @NotNull
     String email;
-    @NotNull
     String website;
-    @NotNull
     UserDtoLight manager;
 }

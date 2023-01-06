@@ -14,14 +14,9 @@ import javax.persistence.Id;
 public class RoomDto {
     @Id
     Long id;
-    @NotNull
     String name;
-    @NotNull
     int numberOfRows;
-    @NotNull
     int seatsPerRow;
-    @NotNull
     int seatsCount;
-    @NotNull
     TheaterDtoLight theater;
 }
