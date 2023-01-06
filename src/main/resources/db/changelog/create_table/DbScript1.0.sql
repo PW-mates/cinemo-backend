@@ -18,10 +18,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`movie` (
   `showing_to` BIGINT NULL DEFAULT NULL,
   `title` VARCHAR(255) NULL DEFAULT NULL,
   `trailer_url` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
@@ -31,10 +28,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`movie_category` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL DEFAULT NULL,
   `slug` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
@@ -44,16 +38,10 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`movie_has_categories` (
   `movie_id` BIGINT NOT NULL,
   `movie_category_id` BIGINT NOT NULL,
   PRIMARY KEY (`movie_id`, `movie_category_id`),
-  INDEX `FKhj5lj9jr3ko8l5txyhb2p4u9g` (`movie_category_id` ASC) VISIBLE,
-  CONSTRAINT `FK6rpml6y51ljebwd28mdr6na6k`
     FOREIGN KEY (`movie_id`)
     REFERENCES `cinemo`.`movie` (`id`),
-  CONSTRAINT `FKhj5lj9jr3ko8l5txyhb2p4u9g`
     FOREIGN KEY (`movie_category_id`)
-    REFERENCES `cinemo`.`movie_category` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `cinemo`.`movie_category` (`id`));
 
 
 -- -----------------------------------------------------
@@ -66,10 +54,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`payment` (
   `payment_method` VARCHAR(255) NULL DEFAULT NULL,
   `reference` VARCHAR(255) NULL DEFAULT NULL,
   `status` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
@@ -78,11 +63,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `cinemo`.`role` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
@@ -106,12 +87,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`user` (
   `status` VARCHAR(255) NULL DEFAULT NULL,
   `updated_at` BIGINT NULL DEFAULT NULL,
   `username` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `UK_sb8bbouer5wak8vyiiy4pf2bx` (`username` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`);
 
 
 -- -----------------------------------------------------
@@ -133,10 +109,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`theater` (
   INDEX `FKnixtebap8ufyg5wgvhjneoax0` (`manager_id` ASC) VISIBLE,
   CONSTRAINT `FKnixtebap8ufyg5wgvhjneoax0`
     FOREIGN KEY (`manager_id`)
-    REFERENCES `cinemo`.`user` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `cinemo`.`user` (`id`));
 
 
 -- -----------------------------------------------------
@@ -154,10 +127,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`room` (
   CONSTRAINT `FK4t0svqpm93ar7fqqp7399w17r`
     FOREIGN KEY (`theater_id`)
     REFERENCES `cinemo`.`theater` (`id`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ON DELETE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -177,10 +147,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`screening` (
     REFERENCES `cinemo`.`room` (`id`),
   CONSTRAINT `FKrghid578c0o08s562sn4m27jm`
     FOREIGN KEY (`movie_id`)
-    REFERENCES `cinemo`.`movie` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `cinemo`.`movie` (`id`));
 
 
 -- -----------------------------------------------------
@@ -189,11 +156,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `cinemo`.`seat_type` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
@@ -215,10 +178,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`seat` (
   CONSTRAINT `FKrlwwa3qrr0wvtyh4e0kq69712`
     FOREIGN KEY (`room_id`)
     REFERENCES `cinemo`.`room` (`id`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ON DELETE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -234,10 +194,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`ticket_type` (
   INDEX `FKpxuhpn3vvv1usrm8316y583r0` (`seat_type_id` ASC) VISIBLE,
   CONSTRAINT `FKpxuhpn3vvv1usrm8316y583r0`
     FOREIGN KEY (`seat_type_id`)
-    REFERENCES `cinemo`.`seat_type` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `cinemo`.`seat_type` (`id`));
 
 
 -- -----------------------------------------------------
@@ -270,10 +227,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`ticket` (
     REFERENCES `cinemo`.`user` (`id`),
   CONSTRAINT `FKrl9y7t6i3fw8r5e10kc24gqe9`
     FOREIGN KEY (`ticket_type_id`)
-    REFERENCES `cinemo`.`ticket_type` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `cinemo`.`ticket_type` (`id`));
 
 
 -- -----------------------------------------------------
@@ -289,10 +243,7 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`ticket_seats` (
     REFERENCES `cinemo`.`seat` (`id`),
   CONSTRAINT `FKyyy80of962k3bdcbcxdb4inm`
     FOREIGN KEY (`ticket_id`)
-    REFERENCES `cinemo`.`ticket` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `cinemo`.`ticket` (`id`));
 
 
 -- -----------------------------------------------------
@@ -308,7 +259,4 @@ CREATE TABLE IF NOT EXISTS `cinemo`.`user_roles` (
     REFERENCES `cinemo`.`user` (`id`),
   CONSTRAINT `FKo2rmqkw5pucpp44p39quu5al5`
     FOREIGN KEY (`roles_id`)
-    REFERENCES `cinemo`.`role` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `cinemo`.`role` (`id`));
