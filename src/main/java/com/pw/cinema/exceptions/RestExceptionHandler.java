@@ -55,6 +55,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return responseException(exception);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DateIsLaterException.class)
+    public Map<String, Object> dateIsLateException(DateIsLaterException exception) {
+        return responseException(exception);
+    }
+
     public Map<String, Object> responseException(Exception exception) {
         Map<String, Object> errorMap = new HashMap<>();
         errorMap.put("success", false);
