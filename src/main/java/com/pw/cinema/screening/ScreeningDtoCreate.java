@@ -5,16 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ScreeningDtoPure {
+public class ScreeningDtoCreate {
+    Long openSale;
     @NotNull
-    Date openSale;
-    @NotNull
-    Date date;
+    Long date;
     @NotNull
     Long movieId;
     @NotNull

@@ -1,16 +1,16 @@
 package com.pw.cinema.screening;
 
+import com.pw.cinema.exceptions.DateIsLaterException;
 import com.pw.cinema.movie.Movie;
 import com.pw.cinema.movie.MovieRepository;
 import com.pw.cinema.room.Room;
 import com.pw.cinema.room.RoomRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.concurrent.ScheduledExecutorService;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 import static com.pw.cinema.utils.Utils.response;
 
@@ -26,10 +26,21 @@ public class ScreeningService {
         this.screeningRepository = screeningRepository;
     }
 
-    public Object createScreening(ScreeningDtoPure screening) {
+    public Object createScreening(ScreeningDtoCreate screening) throws DateIsLaterException {
         Screening newScreening = new Screening();
-        newScreening.setDate(screening.getDate());
-        newScreening.setOpenSale(screening.getOpenSale());
+        Long date = screening.getDate();
+        Long openSale = screening.getOpenSale();
+        if (openSale == null) {
+            Date screenDate = new Date(date * 1000);
+            ZoneId zoneId = ZoneId.systemDefault();
+            LocalDate screenDateLocal = screenDate.toInstant().atZone(zoneId).toLocalDate();
+            screenDateLocal = screenDateLocal.minusDays(7);
+            openSale = screenDateLocal.atStartOfDay(zoneId).toEpochSecond();
+        }
+        else if (date < openSale)
+            throw new DateIsLaterException("Open sale should be before screening date");
+        newScreening.setDate(date);
+        newScreening.setOpenSale(openSale);
         Movie movie = movieRepository.findById(screening.getMovieId()).orElseThrow(() -> new NoSuchElementException(
                 "Not found movie with this id"));
         Room room = roomRepository.findById(screening.getRoomId()).orElseThrow(() -> new NoSuchElementException("Not " +
@@ -45,7 +56,7 @@ public class ScreeningService {
         return response(screening, "Successfully found screening");
     }
 
-    public Object updateScreening(Long id, ScreeningDtoPure screeningChanges) {
+    public Object updateScreening(Long id, ScreeningDtoUpdate screeningChanges) throws DateIsLaterException {
         Screening screening = screeningRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not " +
                 "found screening with this id"));
         Movie newMovie = movieRepository.findById(screeningChanges.getMovieId()).orElseThrow(() ->
@@ -54,8 +65,12 @@ public class ScreeningService {
                 "found room with this id."));
         screening.setMovie(newMovie);
         screening.setRoom(newRoom);
-        screening.setDate(screeningChanges.getDate());
-        screening.setOpenSale(screeningChanges.getOpenSale());
+        Long date = screeningChanges.getDate();
+        Long openSale = screeningChanges.getOpenSale();
+        if (date != null && openSale != null && date < openSale)
+            throw new DateIsLaterException("Open sale should be before screening date");
+        screening.setDate(date);
+        screening.setOpenSale(openSale);
         return response(screeningRepository.save(screening), "Successfully updated screening");
     }
 

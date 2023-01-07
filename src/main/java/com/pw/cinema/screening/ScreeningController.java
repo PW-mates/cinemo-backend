@@ -1,5 +1,6 @@
 package com.pw.cinema.screening;
 
+import com.pw.cinema.exceptions.DateIsLaterException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class ScreeningController {
     }
 
     @PostMapping(path="screenings")
-    public ResponseEntity<Object> createScreening(@RequestBody ScreeningDtoPure screening) {
+    public ResponseEntity<Object> createScreening(@RequestBody ScreeningDtoCreate screening) throws DateIsLaterException {
         return ResponseEntity.ok().body(screeningService.createScreening(screening));
     }
 
@@ -28,7 +29,8 @@ public class ScreeningController {
     }
 
     @PatchMapping(path="screenings/{id}")
-    public ResponseEntity<Object> updateScreening(@PathVariable("id") Long id, @RequestBody ScreeningDtoPure screening) {
+    public ResponseEntity<Object> updateScreening(@PathVariable("id") Long id,
+                                                  @RequestBody ScreeningDtoUpdate screening) throws DateIsLaterException {
         return ResponseEntity.ok().body(screeningService.updateScreening(id, screening));
     }
 
