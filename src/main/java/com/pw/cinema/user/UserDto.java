@@ -2,7 +2,6 @@ package com.pw.cinema.user;
 
 
 import com.pw.cinema.role.Role;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,12 +26,8 @@ public class UserDto {
     String profilePicture;
     String status;
     Collection<Role> roles = new ArrayList<>();
-    @NotNull
     private Long id;
-    @NotNull
     private String firstName;
-    @NotNull
     private String lastName;
-    @NotNull
     private String username;
 }

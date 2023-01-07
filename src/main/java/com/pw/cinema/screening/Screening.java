@@ -1,6 +1,5 @@
 package com.pw.cinema.screening;
 
-
 import com.pw.cinema.movie.Movie;
 import com.pw.cinema.room.Room;
 import com.sun.istack.NotNull;

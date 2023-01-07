@@ -1,6 +1,7 @@
 package com.pw.cinema.theater;
 
 import com.pw.cinema.room.Room;
+import com.pw.cinema.room.RoomLightDto;
 import com.pw.cinema.room.RoomRepository;
 import com.pw.cinema.user.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -23,6 +24,10 @@ public class TheaterService {
     ModelMapper modelMapper;
     @Autowired
     RoomRepository roomRepository;
+
+    public TheaterService(TheaterRepository theaterRepository) {
+        this.theaterRepository = theaterRepository;
+    }
 
     public Object createTheater(Theater theater) {
         if (!userRepository.existsById(theater.getManager().getId()))
@@ -62,9 +67,16 @@ public class TheaterService {
         return resp;
     }
 
+    private RoomLightDto convertRoomEntityToLightDto(Room room) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(room, RoomLightDto.class);
+    }
+
     public Object getTheater(Long id) {
         Theater theater = theaterRepository.findById(id).orElseThrow(() -> new IllegalStateException("Theater with id doesn't exist"));
-        List<Room> rooms = roomRepository.findAllByTheater(theater);
+        List<RoomLightDto> rooms = roomRepository.findAllByTheater(theater)
+                .stream().map(this::convertRoomEntityToLightDto)
+                .collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
         data.put("theater", convertEntityToDto(theater));

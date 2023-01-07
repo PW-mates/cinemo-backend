@@ -9,7 +9,11 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDtoLight {
+public class UserBasicDto {
     @Id
-    private Long id;
+    Long id;
+    String firstName;
+    String lastName;
+    String username;
+    String profilePicture;
 }
