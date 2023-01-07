@@ -1,62 +1,86 @@
 package com.pw.cinema.theater;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.pw.cinema.room.RoomRepository;
+import com.pw.cinema.user.User;
+import com.pw.cinema.user.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
+@RunWith(SpringRunner.class)
 class TheaterServiceTest {
-
-    @Mock
-    private TheaterRepository theaterRepository;
     @Autowired
-    private TheaterService theaterService ;
+    TheaterRepository theaterRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    ModelMapper modelMapper;
+    @Autowired
+    RoomRepository roomRepository;
+    @Autowired
+    private TheaterService theaterService;
 
-    @BeforeEach
-    void setUp() {
-        theaterService = new TheaterService(theaterRepository);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        theaterService = new TheaterService(theaterRepository,
+//                userRepository, modelMapper, roomRepository);
+//        this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+//    }
 
     @Test
     void createTheater() {
-//        User user = new User("Giang", "Do", "giangdo", "123123", );
-//        Theater theater = new Theater(
-//                1,
-//                "Cine",
-//                "Ludwika",
-//                "Wars",
-//                "PL",
-//                1,
-//                1,
-//                "777",
-//                "cine@gmail",
-//                "cine.com",
-//                user
-//                );
-//        theaterService.createTheater()
+        User user = new User(1L);
+        Theater theater = new Theater(
+                2L,
+                "Cine",
+                "Ludwika",
+                "Wars",
+                "PL",
+                1,
+                1,
+                "777",
+                "cine@gmail",
+                "cine.com",
+                user
+        );
+        try {
+            theaterRepository.save(theater);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        theaterService.createTheater(theater);
     }
 
     @Test
     void getTheaters() {
         Object resp = theaterService.getTheaters();
         Map<String, Object> expected = new HashMap<>();
-        List<Theater> theaters = new ArrayList<>();
+        List<TheaterDto> theaters = theaterRepository
+                .findAll().stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
         expected.put("success", true);
         expected.put("data", theaters);
         expected.put("message", "Successful fetching data");
-        assertThat(resp).isEqualTo(expected);
+        assertThat(resp).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+
+    private TheaterDto convertEntityToDto(Theater theater) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(theater, TheaterDto.class);
     }
 
     @Test
