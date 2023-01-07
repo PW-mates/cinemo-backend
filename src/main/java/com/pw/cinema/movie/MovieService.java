@@ -48,7 +48,7 @@ public class MovieService {
 
     public Object updateMovie(Movie updatedMovie, Long id) {
         if (!movieRepository.existsById(id))
-            throw new NoSuchElementException("Not found movie with this id.");
+            throw new NoSuchElementException("Not found movie with this id");
         Set<Long> movieCategoryIds =
                 updatedMovie.getCategories().stream().map(MovieCategory::getId).collect(Collectors.toSet());
         if (!movieCategoryRepository.existsAllByIdIn(movieCategoryIds))
@@ -61,7 +61,7 @@ public class MovieService {
 
     public Object deleteMovie(Long id) {
         if (!movieRepository.existsById(id))
-            throw new NoSuchElementException("Not found movie with this id.");
+            throw new NoSuchElementException("Not found movie with this id");
         movieRepository.deleteById(id);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Successfully deleted movie");
@@ -77,7 +77,7 @@ public class MovieService {
 
 
     public Object uploadPoster(Long id, String poster) {
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not found movie."));
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not found movie"));
         movie.setPosterPhoto(poster);
         Movie savedMovie = movieRepository.save(movie);
         return response(savedMovie, "Successfully added poster.");
