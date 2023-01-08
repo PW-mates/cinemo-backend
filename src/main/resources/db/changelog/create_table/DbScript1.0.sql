@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `movie_has_categories` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `payment` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `account` BIGINT NULL DEFAULT NULL,
+  `amount` FLOAT NULL DEFAULT NULL,
   `currency` VARCHAR(255) NULL DEFAULT NULL,
   `payment_method` VARCHAR(255) NULL DEFAULT NULL,
   `reference` VARCHAR(255) NULL DEFAULT NULL,
