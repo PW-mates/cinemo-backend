@@ -62,5 +62,4 @@ public class TicketTypeService {
         resp.put("message", "Successful update ticket type");
         return resp;
     }
-    }
 }
