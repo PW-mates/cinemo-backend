@@ -43,4 +43,16 @@ public class PaymentService {
         resp.put("message", "Successful get payment");
         return resp;
     }
+
+    public Object updatePayment(Long id, Payment payment) {
+        if (!paymentRepository.existsById(id))
+            throw new IllegalStateException("Payment with id doesn't exist");
+        payment.setId(id);
+        Payment savedPayment = paymentRepository.save(payment);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", savedPayment);
+        resp.put("message", "Successful delete room");
+        return resp;
+    }
 }
