@@ -49,4 +49,17 @@ public class TicketTypeService {
         resp.put("message", "Successful get ticket type");
         return resp;
     }
+
+    public Object updateTicketType(Long id, TicketType ticketType) {
+        if (!ticketTypeRepository.existsById(id))
+            throw new IllegalStateException("TicketType with id doesn't exist");
+        ticketType.setId(id);
+        TicketType savedTicketType = ticketTypeRepository.save(ticketType);
+
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", savedTicketType);
+        resp.put("message", "Successful update ticket type");
+        return resp;
+    }
 }
