@@ -33,7 +33,7 @@ public class TicketService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", savedTicket);
-        resp.put("message", "Successful create room");
+        resp.put("message", "Successful create ticket");
         return resp;
     }
 }
