@@ -85,7 +85,7 @@ public class RoomService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", convertEntityToDto(savedRoom));
-        resp.put("message", "Successful delete room");
+        resp.put("message", "Successful update room");
         return resp;
     }
 }
