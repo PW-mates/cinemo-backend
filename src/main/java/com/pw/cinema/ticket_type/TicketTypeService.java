@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,6 +24,15 @@ public class TicketTypeService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", true);
         resp.put("data", savedTicketType);
+        resp.put("message", "Successful create room");
+        return resp;
+    }
+
+    public Object getTicketTypes() {
+        List<TicketType> ticketTypeList = ticketTypeRepository.findAll();
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("data", ticketTypeList);
         resp.put("message", "Successful create room");
         return resp;
     }
