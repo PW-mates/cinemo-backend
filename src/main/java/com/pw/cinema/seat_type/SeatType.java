@@ -15,6 +15,7 @@ public class SeatType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    float price;
     String name;
     String color;
 }

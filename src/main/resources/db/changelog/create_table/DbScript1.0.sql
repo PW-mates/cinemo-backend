@@ -149,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `seat_type` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL DEFAULT NULL,
   `color` VARCHAR(255) NULL DEFAULT NULL,
+  `price` FLOAT NULL DEFAULT NULL,
   PRIMARY KEY (`id`));
 
 
@@ -169,21 +170,6 @@ CREATE TABLE IF NOT EXISTS `seat` (
     REFERENCES `room` (`id`)
     ON DELETE CASCADE);
 
-
--- -----------------------------------------------------
--- Table `ticket_type`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ticket_type` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `description` VARCHAR(255) NULL DEFAULT NULL,
-  `name` VARCHAR(255) NULL DEFAULT NULL,
-  `price` FLOAT NOT NULL,
-  `seat_type_id` BIGINT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-    FOREIGN KEY (`seat_type_id`)
-    REFERENCES `seat_type` (`id`));
-
-
 -- -----------------------------------------------------
 -- Table `ticket`
 -- -----------------------------------------------------
@@ -197,16 +183,13 @@ CREATE TABLE IF NOT EXISTS `ticket` (
   `payment_id` BIGINT NULL DEFAULT NULL,
   `screening_id` BIGINT NULL DEFAULT NULL,
   `seller_id` BIGINT NULL DEFAULT NULL,
-  `ticket_type_id` BIGINT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
     FOREIGN KEY (`payment_id`)
     REFERENCES `payment` (`id`),
     FOREIGN KEY (`screening_id`)
     REFERENCES `screening` (`id`),
     FOREIGN KEY (`seller_id`)
-    REFERENCES `user` (`id`),
-    FOREIGN KEY (`ticket_type_id`)
-    REFERENCES `ticket_type` (`id`));
+    REFERENCES `user` (`id`));
 
 
 -- -----------------------------------------------------
