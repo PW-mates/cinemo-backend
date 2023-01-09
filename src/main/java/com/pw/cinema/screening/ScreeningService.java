@@ -56,6 +56,8 @@ public class ScreeningService {
     }
 
     public Object updateScreening(Long id, ScreeningDtoUpdate screeningChanges) throws DateIsLaterException {
+        if (!screeningRepository.existsById(id))
+            throw new NoSuchElementException("Not found screening with this id");
         Screening screening = screeningRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not " +
                 "found screening with this id"));
         Movie newMovie = movieRepository.findById(screeningChanges.getMovieId()).orElseThrow(() ->
