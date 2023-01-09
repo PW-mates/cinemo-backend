@@ -7,7 +7,6 @@ import com.pw.cinema.room.Room;
 import com.pw.cinema.room.RoomRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;

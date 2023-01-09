@@ -21,19 +21,25 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String code;
+
     @ManyToOne
     @JoinColumn(name = "screening_id")
     Screening screening;
+
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Seat> seats;
+
     @ManyToOne
     @JoinColumn(name = "seller_id")
     User seller;
+
     float totalPrice;
     Long createAt;
     String paymentMethod;
+
     @ManyToOne
     @JoinColumn(name = "payment_id")
     Payment payment;
+
     String status;
 }

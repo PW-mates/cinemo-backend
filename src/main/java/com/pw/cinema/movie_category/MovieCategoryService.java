@@ -48,7 +48,7 @@ public class MovieCategoryService {
 
     public Object create(MovieCategory movieCategory) throws AlreadyExistsException {
         if (movieCategoryRepository.findByName(movieCategory.getName()) != null) {
-            throw new AlreadyExistsException("Movie with that name already exists");
+            throw new AlreadyExistsException("Movie category with that name already exists");
         }
         MovieCategory newMovieCategory = movieCategoryRepository.save(movieCategory);
         return response(newMovieCategory, "Successfully added new category");
