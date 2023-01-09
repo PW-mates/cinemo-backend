@@ -12,5 +12,5 @@ import java.util.Set;
 public interface SeatRepository extends JpaRepository<Seat, Long> {
     List<Seat> findAllByRoom(Room room);
     Boolean existsAllByIdIn(Set<Long> ids);
-    Set<Seat> findAllById(Set<Long> ids);
+    Set<Seat> findAllByIdIn(Set<Long> ids);
 }

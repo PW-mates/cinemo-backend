@@ -1,7 +1,7 @@
 package com.pw.cinema.ticket;
 
 import com.pw.cinema.payment.Payment;
-import com.pw.cinema.screening.Screening;
+import com.pw.cinema.screening.ScreeningDto;
 import com.pw.cinema.seat.SeatDto;
 import com.pw.cinema.user.UserBasicDto;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class TicketDto {
     @Id
     Long id;
     String code;
-    Screening screening;
+    ScreeningDto screening;
     Set<SeatDto> seats;
     UserBasicDto seller;
     float totalPrice;
