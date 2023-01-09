@@ -5,7 +5,7 @@
 
 INSERT INTO role VALUES (1,'ROLE_ADMIN'),(2,'ROLE_USER');
 
-INSERT INTO seat_type VALUES (1,'Classic','3CB371'),(2,'VIP','ffb703');
+INSERT INTO seat_type VALUES (1,'Classic','3CB371', 15),(2,'VIP','ffb703', 30);
 
 INSERT INTO `user` VALUES
 (1,NULL,NULL,NULL,NULL,NULL,'Jack',NULL,NULL,'Daniel','$2a$10$90JM.duiCjHdXxHiAe2wpODQEs3IkU/tKMQp1KDKbtzK/HFexC9FW',NULL,NULL,NULL,NULL,NULL,'admin'),
