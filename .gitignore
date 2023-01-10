@@ -160,3 +160,5 @@ buildNumber.properties
 /target
 
 .env
+
+data/
