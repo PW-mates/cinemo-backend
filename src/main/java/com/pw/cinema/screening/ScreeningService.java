@@ -4,12 +4,19 @@ import com.pw.cinema.exceptions.DateIsLaterException;
 import com.pw.cinema.movie.Movie;
 import com.pw.cinema.movie.MovieRepository;
 import com.pw.cinema.room.Room;
+import com.pw.cinema.room.RoomDto;
 import com.pw.cinema.room.RoomRepository;
+import com.pw.cinema.seat.Seat;
+import com.pw.cinema.seat.SeatDto;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.pw.cinema.utils.Utils.response;
 
@@ -18,11 +25,18 @@ public class ScreeningService {
     MovieRepository movieRepository;
     RoomRepository roomRepository;
     ScreeningRepository screeningRepository;
+    ModelMapper modelMapper;
 
-    public ScreeningService(MovieRepository movieRepository, RoomRepository roomRepository, ScreeningRepository screeningRepository) {
+    public ScreeningService(MovieRepository movieRepository, RoomRepository roomRepository, ScreeningRepository screeningRepository, ModelMapper modelMapper) {
         this.movieRepository = movieRepository;
         this.roomRepository = roomRepository;
         this.screeningRepository = screeningRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    public ScreeningDto convertEntityToDto(Screening screening) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(screening, ScreeningDto.class);
     }
 
     public Object createScreening(ScreeningDtoCreate screening) throws DateIsLaterException {
@@ -35,8 +49,7 @@ public class ScreeningService {
             LocalDate screenDateLocal = screenDate.toInstant().atZone(zoneId).toLocalDate();
             screenDateLocal = screenDateLocal.minusDays(7);
             openSale = screenDateLocal.atStartOfDay(zoneId).toEpochSecond();
-        }
-        else if (date < openSale)
+        } else if (date < openSale)
             throw new DateIsLaterException("Open sale should be before screening date");
         newScreening.setDate(date);
         newScreening.setOpenSale(openSale);
@@ -46,13 +59,14 @@ public class ScreeningService {
                 "found room with this id."));
         newScreening.setMovie(movie);
         newScreening.setRoom(room);
-        return response(screeningRepository.save(newScreening), "Successfully created screening");
+        Screening savedScreening = screeningRepository.save(newScreening);
+        return response(convertEntityToDto(savedScreening), "Successfully created screening");
     }
 
     public Object getScreening(Long id) {
         Screening screening = screeningRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("Not found screening with this id"));
-        return response(screening, "Successfully found screening");
+        return response(convertEntityToDto(screening), "Successfully found screening");
     }
 
     public Object updateScreening(Long id, ScreeningDtoUpdate screeningChanges) throws DateIsLaterException {
@@ -72,7 +86,8 @@ public class ScreeningService {
             throw new DateIsLaterException("Open sale should be before screening date");
         screening.setDate(date);
         screening.setOpenSale(openSale);
-        return response(screeningRepository.save(screening), "Successfully updated screening");
+        Screening savedScreening = screeningRepository.save(screening);
+        return response(convertEntityToDto(savedScreening), "Successfully updated screening");
     }
 
     public Object deleteScreening(Long id) {
@@ -86,7 +101,8 @@ public class ScreeningService {
     }
 
     public Object getAllScreenings() {
-        List<Screening> screeningList = screeningRepository.findAll();
+        List<ScreeningDto> screeningList = screeningRepository.findAll()
+                .stream().map(this::convertEntityToDto).collect(Collectors.toList());
         return response(screeningList, "Successfully found screenings");
     }
 }

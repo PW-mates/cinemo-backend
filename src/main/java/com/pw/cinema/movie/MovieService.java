@@ -24,11 +24,6 @@ public class MovieService {
         this.movieCategoryRepository = movieCategoryRepository;
     }
 
-    public MovieDto convertEntityToDto(Movie movie) {
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        return modelMapper.map(movie, MovieDto.class);
-    }
-
     public Object create(Movie movie) {
         Set<Long> movieCategoryIds =
                 movie.getCategories().stream().map(MovieCategory::getId).collect(Collectors.toSet());
@@ -41,8 +36,6 @@ public class MovieService {
 
     public Object getMovieList() {
         List<Movie> movies = movieRepository.findAll();
-//        List<MovieDto> movies = movieRepository.findAll().stream().map(this::convertEntityToDto)
-//                .collect(Collectors.toList());
         return response(movies, "Successfully found movies");
     }
 

@@ -104,7 +104,6 @@ public class TicketService {
         ticket.setTotalPrice(totalPrice);
         Ticket newTicket = ticketRepository.save(ticket);
         return response(convertEntityToDto(newTicket), "Successfully updated ticket");
-
     }
 
 }
