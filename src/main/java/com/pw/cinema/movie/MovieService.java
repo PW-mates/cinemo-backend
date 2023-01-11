@@ -73,6 +73,6 @@ public class MovieService {
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Not found movie"));
         movie.setPosterPhoto(poster);
         Movie savedMovie = movieRepository.save(movie);
-        return response(savedMovie, "Successfully added poster.");
+        return response(savedMovie, "Successfully added poster");
     }
 }
