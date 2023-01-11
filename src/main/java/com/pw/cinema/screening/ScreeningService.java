@@ -3,11 +3,14 @@ package com.pw.cinema.screening;
 import com.pw.cinema.exceptions.DateIsLaterException;
 import com.pw.cinema.movie.Movie;
 import com.pw.cinema.movie.MovieRepository;
+import com.pw.cinema.payment.Payment;
+import com.pw.cinema.payment.PaymentRepository;
 import com.pw.cinema.room.Room;
 import com.pw.cinema.room.RoomDto;
 import com.pw.cinema.room.RoomRepository;
 import com.pw.cinema.seat.Seat;
 import com.pw.cinema.seat.SeatDto;
+import com.pw.cinema.ticket.TicketRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,10 @@ public class ScreeningService {
     RoomRepository roomRepository;
     ScreeningRepository screeningRepository;
     ModelMapper modelMapper;
+    @Autowired
+    TicketRepository ticketRepository;
+    @Autowired
+    PaymentRepository paymentRepository;
 
     public ScreeningService(MovieRepository movieRepository, RoomRepository roomRepository, ScreeningRepository screeningRepository, ModelMapper modelMapper) {
         this.movieRepository = movieRepository;
@@ -104,5 +111,22 @@ public class ScreeningService {
         List<ScreeningDto> screeningList = screeningRepository.findAll()
                 .stream().map(this::convertEntityToDto).collect(Collectors.toList());
         return response(screeningList, "Successfully found screenings");
+    }
+
+    public Object getStatistics() {
+        int totalOrder = ticketRepository.findAll().size();
+        int totalTicket = ticketRepository.findAll().stream().mapToInt(ticket -> ticket.getSeats().size()).sum();
+        int totalScreenings = screeningRepository.findAll().size();
+        float totalRevenue = paymentRepository.findAll().stream().map(Payment::getAmount).reduce(0f, Float::sum);
+        Map<String, Object> data = new HashMap<>();
+        data.put("totalOrder", totalOrder);
+        data.put("totalScreening", totalScreenings);
+        data.put("totalRevenue", totalRevenue);
+        data.put("totalTicket", totalTicket);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Successfully fetching data");
+        response.put("data", data);
+        response.put("success", true);
+        return response;
     }
 }

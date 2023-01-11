@@ -38,4 +38,9 @@ public class ScreeningController {
     public ResponseEntity<Object> updateScreening(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(screeningService.deleteScreening(id));
     }
+
+    @GetMapping(path = "statistics")
+    public ResponseEntity<Object> getStatistics() {
+        return ResponseEntity.ok().body(screeningService.getStatistics());
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import static com.pw.cinema.utils.Utils.response;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,9 @@ public class TicketService {
     ModelMapper modelMapper;
 
     public Object create(Ticket ticket) {
+        Instant instant = Instant.now();
+        long timeStampMillis = instant.toEpochMilli();
+        ticket.setCreateAt(timeStampMillis);
         // should be without payment is null
         ticket.setSeller(userRepository.findById(ticket.getSeller().getId()).
                 orElseThrow(() -> new IllegalStateException("Seller does not exist")));
