@@ -114,13 +114,15 @@ public class ScreeningService {
     }
 
     public Object getStatistics() {
-        int soldTickets = ticketRepository.findAll().size();
+        int totalOrder = ticketRepository.findAll().size();
+        int totalTicket = ticketRepository.findAll().stream().mapToInt(ticket -> ticket.getSeats().size()).sum();
         int totalScreenings = screeningRepository.findAll().size();
         float totalRevenue = paymentRepository.findAll().stream().map(Payment::getAmount).reduce(0f, Float::sum);
         Map<String, Object> data = new HashMap<>();
-        data.put("totalTicket", soldTickets);
+        data.put("totalOrder", totalOrder);
         data.put("totalScreening", totalScreenings);
         data.put("totalRevenue", totalRevenue);
+        data.put("totalTicket", totalTicket);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Successfully fetching data");
         response.put("data", data);
