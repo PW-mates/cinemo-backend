@@ -90,8 +90,10 @@ public class TicketService {
                 orElseThrow(() -> new IllegalStateException("Seller does not exist")));
         ticket.setScreening(screeningRepository.findById(ticket.getScreening().getId())
                 .orElseThrow(() -> new IllegalStateException("Screening does not exist")));
-        ticket.setPayment(paymentRepository.findById(ticket.getPayment().getId())
-                .orElseThrow(() -> new IllegalStateException("Payment does not exist")));
+        if (ticket.getPayment() != null) {
+            ticket.setPayment(paymentRepository.findById(ticket.getPayment().getId())
+                    .orElseThrow(() -> new IllegalStateException("Payment does not exist")));
+        }
         Set<Long> seatIds = ticket.getSeats().stream().map(Seat::getId).collect(Collectors.toSet());
         if (!seatRepository.existsAllByIdIn(seatIds)) {
             throw new IllegalStateException("Not found seats");
