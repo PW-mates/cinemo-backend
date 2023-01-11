@@ -34,4 +34,9 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "movie_category_id"))
     private Set<MovieCategory> categories = new HashSet<>();
 
+    public Movie(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
 }
