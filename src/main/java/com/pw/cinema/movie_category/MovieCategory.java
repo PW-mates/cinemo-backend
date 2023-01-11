@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pw.cinema.movie.Movie;
 import com.pw.cinema.utils.Views;
+import liquibase.pro.packaged.S;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +38,15 @@ public class MovieCategory {
     @JsonIgnore
     private Set<Movie> movies = new HashSet<>();
 
+    public MovieCategory(Long id, String name, String slug) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+    }
+
+    public MovieCategory( String name, String slug) {
+        this.name = name;
+        this.slug = slug;
+    }
 
 }
