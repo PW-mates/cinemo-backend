@@ -1,5 +1,7 @@
 # Cinemo - Backend
 
+![Build status](https://github.com/PW-mates/cinemo-backend/actions/workflows/gradle.yml/badge.svg?branch=main)![Coverage Status](https://coveralls.io/repos/github/PW-mates/cinemo-backend/badge.svg?branch=main)](https://coveralls.io/github/PW-mates/cinemo-backend?branch=main)
+
 ### Introduction
 The back-end repository contains the server-side code for Cinemo - web application that is used to manage the cinema chains.
 
